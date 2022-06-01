@@ -5,20 +5,53 @@ export type StaffDocument = Staff & Document;
 
 @Schema({collection:"staff"})
 export class Staff{
-    @Prop()
-    id_staff:string;
+    @Prop({
+        type:String,
+        required:true,
+    })
+    id:string;
 
-    @Prop()
+    @Prop({
+        type:String,
+        required:true
+    })
+    password:string;
+
+    @Prop({
+        type:String,
+        required:true
+    })
     name:string;
 
-    @Prop()
-    gender:Boolean;
+    @Prop({
+        type:String,
+        required:false
+    })
+    avatar:string;
 
-    @Prop()
+    @Prop({
+        type:Date,
+        required:true
+    })
     birthday:Date;
 
-    @Prop()
-    phoneNumber:string;
+    @Prop({
+        type:Number,
+        required:true
+    })
+    role:number;
+
+    @Prop({
+        type:Date,
+        required:true
+    })
+    first_date:Date;
+
+    @Prop({
+        type:Number,
+        required:true
+    })
+    salary:number;
 }
 
 export const StaffSchema = SchemaFactory.createForClass(Staff);

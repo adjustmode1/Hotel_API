@@ -1,18 +1,36 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { StaffUpdateDto } from './dto/staff.update.dto';
+import { StaffLoginDto } from './dto/staff.login.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { StaffCreateDto } from './dto/staff.create.dto';
 import { StaffService } from './staff.service';
 
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
-  @Get()
-  test(){
-    // return this.staffService.login();
+  @Get('list')
+  async test(@Query() query){
+    return "all list"
   }
+
   @Post('login')
-  async login(@Body() id){
-    console.log('ctrl',id)
-    let result = null;
-    result = await this.staffService.login(id.id_staff);
-    return result;
+  @UsePipes(new ValidationPipe({transform:true}))
+  async login(@Body() login:StaffLoginDto){
+    return login;
+  }
+
+  @Post('create')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() body:StaffCreateDto){
+    return body;
+  }
+
+  @Delete('delete/:id')
+  async remove(@Param('id') id:string){
+    return id;
+  }
+
+  @Put('update')
+  async update(@Body() info:StaffUpdateDto){
+    return info;
   }
 }
