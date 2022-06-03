@@ -1,26 +1,27 @@
-import { IsDate, IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, MinLength } from "class-validator";
 
 export class StaffCreateDto{
     @IsNotEmpty()
     id:string;
 
     @IsNotEmpty()
+    @MinLength(8)
     password:string;
 
     @IsNotEmpty()
     name:string;
 
-    avatar:string;
-
     @IsNotEmpty()
     birthday:Date;
 
-    @IsNumber()
+    @IsNotEmpty()
     role:number;
 
     @IsNotEmpty()
     first_date:Date;
 
-    @IsNumber()
+    avatar:object;
+
+    @IsNotEmpty()
     salary:number;
 }

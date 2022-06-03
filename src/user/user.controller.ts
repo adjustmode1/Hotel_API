@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { HashService } from './../hash/hash.service';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,28 +8,35 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @Post('create')
+  @UsePipes(new ValidationPipe({transform:true}))
+  async create(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto)
+    let hash = new HashService();
+    let pass_hash = await hash.hash(createUserDto.password);
+    createUserDto.password = pass_hash;
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Get('list')
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    console.log(id)
+    return this.userService.findOne(id);
   }
 
+  //chưa xong
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }

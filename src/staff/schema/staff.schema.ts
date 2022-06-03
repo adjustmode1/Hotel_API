@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Blob } from "buffer";
 import { Document } from "mongoose";
 
 export type StaffDocument = Staff & Document;
@@ -9,7 +10,7 @@ export class Staff{
         type:String,
         required:true,
     })
-    id:string;
+    _id:string;
 
     @Prop({
         type:String,
@@ -27,13 +28,26 @@ export class Staff{
         type:String,
         required:false
     })
-    avatar:string;
+
+    @Prop({
+        type:Object
+    })
+    avatar:{
+        data:Buffer,
+        type:String,
+        name:String
+    };
 
     @Prop({
         type:Date,
         required:true
     })
     birthday:Date;
+
+    @Prop({
+        type:Number,
+        required:true
+    })
 
     @Prop({
         type:Number,

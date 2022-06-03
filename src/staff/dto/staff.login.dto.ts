@@ -5,6 +5,5 @@ export class StaffLoginDto{
     id:string;
 
     @IsNotEmpty()
-    @MinLength(8)
     password:string;
 }
