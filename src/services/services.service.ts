@@ -1,26 +1,37 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { Services, ServicesDocument } from './schema/services.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ServicesService {
+  constructor(@InjectModel(Services.name) private servicesModel:Model<ServicesDocument>){}
+
   create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new service';
+    return this.servicesModel.insertMany({
+      name:createServiceDto.name,
+      price:createServiceDto.price
+    });
   }
 
   findAll() {
-    return `This action returns all services`;
+    return this.servicesModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
+  findOne(id: string) {
+    return this.servicesModel.find({_id:id});
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
+  update(id: string, updateServiceDto: UpdateServiceDto) {
+    return this.servicesModel.updateOne({_id:id},{
+      name:updateServiceDto.name,
+      price:updateServiceDto.price
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  remove(id: string) {
+    return this.servicesModel.deleteOne({_id:id});
   }
 }

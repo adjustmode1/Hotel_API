@@ -1,21 +1,11 @@
-import { IsNumber } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
+import { StaffCreateDto } from './staff.create.dto';
+import { PartialType } from '@nestjs/mapped-types';
+import { SchemaTypes } from 'mongoose';
 
-export class StaffUpdateDto{
-    @IsNotEmpty()
-    id:string;
-
-    password:string;
-
-    name:string;
-
-    avatar:string;
-
-    birthday:Date;
-
-    role:number;
-
-    first_date:Date;
-
-    salary:number;
+export class StaffUpdateDto extends PartialType(StaffCreateDto){
+    @IsNotEmpty({
+        type:SchemaTypes.ObjectId
+    })
+    _id:string;
 }

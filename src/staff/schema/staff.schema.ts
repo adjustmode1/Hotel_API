@@ -1,16 +1,20 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Blob } from "buffer";
 import { Document } from "mongoose";
+import { Avatar } from "./file.schema";
 
 export type StaffDocument = Staff & Document;
+
+
 
 @Schema({collection:"staff"})
 export class Staff{
     @Prop({
         type:String,
+        unique:true,
         required:true,
     })
-    _id:string;
+    gmail:string;
 
     @Prop({
         type:String,
@@ -30,13 +34,19 @@ export class Staff{
     })
 
     @Prop({
-        type:Object
+        type:String
     })
-    avatar:{
-        data:Buffer,
-        type:String,
-        name:String
-    };
+    avatar:string;
+    // @Prop({
+    //     type:{
+    //         name:String,
+    //         path:String
+    //     }
+    // })
+    // avatar:{
+    //     name:string,
+    //     path:string
+    // }
 
     @Prop({
         type:Date,

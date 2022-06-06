@@ -7,7 +7,7 @@ import { UpdateTestDto } from './dto/update-test.dto';
 export class TestController {
   constructor(private readonly testService: TestService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createTestDto: CreateTestDto) {
     return this.testService.create(createTestDto);
   }

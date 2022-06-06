@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 
 export type TypeRoomDocument = TypeRoom & Document;
 
-@Schema()
+@Schema({versionKey:false})
 export class TypeRoom{
     @Prop({
         type:String,

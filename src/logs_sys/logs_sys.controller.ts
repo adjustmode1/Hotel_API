@@ -19,16 +19,16 @@ export class LogsSysController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.logsSysService.findOne(+id);
+    return this.logsSysService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateLogsSyDto: UpdateLogsSyDto) {
-    return this.logsSysService.update(+id, updateLogsSyDto);
+    return this.logsSysService.update(id, updateLogsSyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.logsSysService.remove(+id);
+    return this.logsSysService.remove(id);
   }
 }

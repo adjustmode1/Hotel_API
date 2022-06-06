@@ -2,7 +2,7 @@ import { IsNotEmpty, IsNumber, MinLength } from "class-validator";
 
 export class StaffCreateDto{
     @IsNotEmpty()
-    id:string;
+    gmail:string;
 
     @IsNotEmpty()
     @MinLength(8)
@@ -20,7 +20,7 @@ export class StaffCreateDto{
     @IsNotEmpty()
     first_date:Date;
 
-    avatar:object;
+    avatar:string;
 
     @IsNotEmpty()
     salary:number;

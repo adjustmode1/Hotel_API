@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateTypeRoomDto {
     @IsNotEmpty()
-    _id:string;
+    id:string;
 
     @IsNotEmpty()
     name:string;

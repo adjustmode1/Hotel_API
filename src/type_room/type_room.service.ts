@@ -10,23 +10,42 @@ export class TypeRoomService {
   constructor(@InjectModel(TypeRoom.name) private typeRoomModel:Model<TypeRoomDocument>){}
   async create(createTypeRoomDto: CreateTypeRoomDto) {
     return this.typeRoomModel.create({
-      createTypeRoomDto
-    });
+      _id:createTypeRoomDto.id,
+      name:createTypeRoomDto.name,
+      price:createTypeRoomDto.price
+    }).then(res=>{
+      console.log(res)
+      return {
+        status:200,
+        data:res
+      };
+    })
+    .catch(err=>{
+      console.log(err)
+      return {
+        status:400,
+        data:11000
+      };
+    })
   }
 
   findAll() {
-    return `This action returns all typeRoom`;
+    return this.typeRoomModel.find();
+  } 
+
+  findOne(id: string) {
+    return this.typeRoomModel.find({_id:id});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} typeRoom`;
+  update(id: string, updateTypeRoomDto: UpdateTypeRoomDto) {
+    return this.typeRoomModel.updateOne({_id:id},{
+      name:updateTypeRoomDto.name,
+      price:updateTypeRoomDto.price
+    });
   }
 
-  update(id: number, updateTypeRoomDto: UpdateTypeRoomDto) {
-    return `This action updates a #${id} typeRoom`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} typeRoom`;
+  remove(id: string) {
+    return this.typeRoomModel.deleteOne({_id:id});
   }
 }

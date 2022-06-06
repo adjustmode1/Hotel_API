@@ -1,26 +1,30 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateLogsSyDto } from './dto/create-logs_sy.dto';
 import { UpdateLogsSyDto } from './dto/update-logs_sy.dto';
+import { LogsSys, LogsSysDocument } from './schema/logs_sys.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class LogsSysService {
+  constructor(@InjectModel(LogsSys.name) private logsSysModel:Model<LogsSysDocument>){}
   create(createLogsSyDto: CreateLogsSyDto) {
-    return 'This action adds a new logsSy';
+    return "f"
   }
 
   findAll() {
-    return `This action returns all logsSys`;
+    return this.logsSysModel.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} logsSy`;
   }
 
-  update(id: number, updateLogsSyDto: UpdateLogsSyDto) {
+  update(id: string, updateLogsSyDto: UpdateLogsSyDto) {
     return `This action updates a #${id} logsSy`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} logsSy`;
   }
 }

@@ -1,3 +1,4 @@
+import { StaffUpdateDto } from './dto/staff.update.dto';
 import { StaffCreateDto } from './dto/staff.create.dto';
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,19 +10,24 @@ export class StaffService {
     constructor(@InjectModel(Staff.name) private staffModel:Model<StaffDocument>){}
 
     findOne(id){
-       return this.staffModel.findOne({id_staff:id}).exec();
+       return this.staffModel.findOne({gmail:id}).exec();
     }
 
-    create(staff:StaffCreateDto){
+    findAll(){
+        return this.staffModel.find().exec();
+    }
+
+    create(staff:StaffCreateDto,file){
+        console.log('type file',typeof(file))
         return this.staffModel.insertMany({
-            _id:staff.id,
+            gmail:staff.gmail,
             password:staff.password,
             name:staff.name,
             birthday:staff.birthday,
             role:staff.role,
             first_date:staff.first_date,
             salary:staff.salary,
-            avatar:""
+            avatar:file
         })
         .then(res=>{
             console.log('res',res)
@@ -32,51 +38,39 @@ export class StaffService {
         })
         .catch(err=>{
             console.log("err",err)
+            if(err.code===11000)
             return {
                 status:400,
                 data:"duplicate"
             }
+            else 
+                return {
+                    status:500,
+                    data:err
+                }
         })
     }
 
-
-    // chưa xong
-    async uploadAvatar(id,file){
-        console.log("file",file)
-        this.staffModel.insertMany({
-            _id:"b12345",
-            password:"$2b$10$yOFUobd5YJnRUhti3DExzeqa2vEVoOEIPfEfK8ryeIZrjMEXGIwdK",
-            name:"a",
-            birthday:"02/20/2000",
-            role:1,
-            first_date:"2/22/2000",
-            salary:222,
-            avatar:{
-            data:file.buffer,
-            type:file.mimetype,
-            name:file.originalname,
-        }}).then(res=>{
-            console.log('res',res)
-        })
-        .catch(err=>{
-            console.log("err",err);
-        })
-        // this.staffModel.updateOne({_id:id},{avatar:{
-        //     data:file.buffer,
-        //     type:file.mimetype,
-        //     name:file.originalname,
-        // }}).then(res=>{
-        //     console.log('res',res)
-        // })
-        // .catch(err=>{
-        //     console.log("err",err);
-        // })
-        return "ok"
+    removeOne(gmail:string){
+        let result = this.staffModel.deleteOne({
+            gmail
+        });
+        console.log(result)
+        return result
     }
 
-    removeOne(id:string){
-        return this.staffModel.deleteOne({
-            _id:id
-        })
+    update(info:StaffUpdateDto){
+        return this.staffModel.updateOne({gmail:info.gmail},{$set:
+            {
+                gmail:info.gmail,
+                password:info.password,
+                name:info.name,
+                birthday:info.birthday,
+                role:info.role,
+                first_date:info.first_date,
+                avatar:info.avatar,
+                salary:info.salary
+            }
+        });
     }
 }

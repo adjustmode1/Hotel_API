@@ -1,11 +1,17 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
+import { Test, TestDocument } from './schema/test.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class TestService {
+
+  constructor(@InjectModel(Test.name) private testModel:Model<TestDocument>){}
+
   create(createTestDto: CreateTestDto) {
-    return 'This action adds a new test';
+    return this.testModel.insertMany(createTestDto);
   }
 
   findAll() {
