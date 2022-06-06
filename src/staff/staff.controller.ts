@@ -70,8 +70,6 @@ export class StaffController {
     return 0;
   }
 
-
-  // chưa xong
   @Put('update')
   @UseInterceptors(FileInterceptor('avatar',{
     storage:diskStorage({
@@ -83,16 +81,14 @@ export class StaffController {
   }))
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(@Body() info:StaffUpdateDto,@UploadedFile() file:Express.Multer.File){
-    let staff = await this.staffService.findOne(info._id);
-    let result = await this.staffService.update(info);
+    let staff = await this.staffService.findByIdOne(info._id);
     if(!!file){
-      if(result.modifiedCount===1){
-
-      }
-      console.log('có file')
-    }else{
-      console.log("không file")
+      info.avatar = "src/avatar/"+file.filename;
     }
-    return "ok";
+    let result = await this.staffService.update(staff._id,info);
+    if(result.modifiedCount===1&&!!file){
+      fs.rmSync(staff.avatar);
+    }
+    return result;
   }
 }

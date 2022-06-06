@@ -1,3 +1,4 @@
+import { HashService } from './../../hash/hash.service';
 import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Blob } from "buffer";
 import { Document } from "mongoose";
@@ -5,9 +6,13 @@ import { Avatar } from "./file.schema";
 
 export type StaffDocument = Staff & Document;
 
-
-
-@Schema({collection:"staff"})
+@Schema({collection:"staff",
+toObject: {
+    virtuals: true,
+  },
+  toJSON: {
+    virtuals: true,
+  },})
 export class Staff{
     @Prop({
         type:String,
@@ -37,16 +42,6 @@ export class Staff{
         type:String
     })
     avatar:string;
-    // @Prop({
-    //     type:{
-    //         name:String,
-    //         path:String
-    //     }
-    // })
-    // avatar:{
-    //     name:string,
-    //     path:string
-    // }
 
     @Prop({
         type:Date,

@@ -4,8 +4,6 @@ import { PartialType } from '@nestjs/mapped-types';
 import { SchemaTypes } from 'mongoose';
 
 export class StaffUpdateDto extends PartialType(StaffCreateDto){
-    @IsNotEmpty({
-        type:SchemaTypes.ObjectId
-    })
+    @IsNotEmpty()
     _id:string;
 }

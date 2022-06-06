@@ -11,9 +11,11 @@ import { ServicesModule } from './services/services.module';
 import { LogsSysModule } from './logs_sys/logs_sys.module';
 import { HashModule } from './hash/hash.module';
 import { FileModule } from './file/file.module';
+import { AuthenModule } from './authen/authen.module';
+import { AuthorModule } from './author/author.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule],
+  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule],
   controllers: [AppController],
   providers: [AppService],
 })
