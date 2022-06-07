@@ -7,12 +7,12 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createServiceDto: CreateServiceDto) {
     return this.servicesService.create(createServiceDto);
   }
 
-  @Get()
+  @Get('list')
   findAll() {
     return this.servicesService.findAll();
   }
@@ -22,9 +22,10 @@ export class ServicesController {
     return this.servicesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-    return this.servicesService.update(id, updateServiceDto);
+  @Patch('update')
+  update(@Body() updateServiceDto: UpdateServiceDto) {
+    console.log(updateServiceDto)
+    return this.servicesService.update(updateServiceDto);
   }
 
   @Delete(':id')

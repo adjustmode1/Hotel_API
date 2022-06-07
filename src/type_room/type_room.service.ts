@@ -10,7 +10,6 @@ export class TypeRoomService {
   constructor(@InjectModel(TypeRoom.name) private typeRoomModel:Model<TypeRoomDocument>){}
   async create(createTypeRoomDto: CreateTypeRoomDto) {
     return this.typeRoomModel.create({
-      _id:createTypeRoomDto.id,
       name:createTypeRoomDto.name,
       price:createTypeRoomDto.price
     }).then(res=>{
@@ -37,8 +36,8 @@ export class TypeRoomService {
     return this.typeRoomModel.find({_id:id});
   }
 
-  update(id: string, updateTypeRoomDto: UpdateTypeRoomDto) {
-    return this.typeRoomModel.updateOne({_id:id},{
+  update(updateTypeRoomDto: UpdateTypeRoomDto) {
+    return this.typeRoomModel.updateOne({_id:updateTypeRoomDto.id},{
       name:updateTypeRoomDto.name,
       price:updateTypeRoomDto.price
     });

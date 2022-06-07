@@ -23,9 +23,9 @@ export class TypeRoomController {
     return this.typeRoomService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTypeRoomDto: UpdateTypeRoomDto) {
-    return this.typeRoomService.update(id, updateTypeRoomDto);
+  @Patch('update')
+  update(@Body() updateTypeRoomDto: UpdateTypeRoomDto) {
+    return this.typeRoomService.update(updateTypeRoomDto);
   }
 
   @Delete(':id')

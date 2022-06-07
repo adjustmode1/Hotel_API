@@ -9,17 +9,11 @@ export class TypeRoom{
         type:String,
         required:true
     })
-    _id:string;
-
-    @Prop({
-        type:String,
-        required:true
-    })
     name:string;
 
     @Prop({
         type:Number,
-        required:true
+        required:true,
     })
     price:number;
 }

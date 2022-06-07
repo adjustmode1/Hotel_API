@@ -24,8 +24,8 @@ export class ServicesService {
     return this.servicesModel.find({_id:id});
   }
 
-  update(id: string, updateServiceDto: UpdateServiceDto) {
-    return this.servicesModel.updateOne({_id:id},{
+  update(updateServiceDto: UpdateServiceDto) {
+    return this.servicesModel.updateOne({_id:updateServiceDto._id},{
       name:updateServiceDto.name,
       price:updateServiceDto.price
     });
