@@ -11,28 +11,33 @@ export class UserService {
 
   create(createUserDto: CreateUserDto) {
     return this.userModel.insertMany({
-      _id:createUserDto.gmail,
+      gmail:createUserDto.gmail,
       name:createUserDto.name,
       gender:createUserDto.gender,
       birthday:createUserDto.birthday,
       password:createUserDto.password,
       phone:createUserDto.phone,
-      avatar:""
+      avatar:createUserDto.avatar
     });
   }
 
   findAll() {
-    return this.userModel.find();
+    return this.userModel.find().exec();
   }
 
   findOne(id: string) {
-    return this.userModel.find({
-      _id:id
-    });
+    return this.userModel.findOne({_id:id}).exec();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(updateUserDto: UpdateUserDto) {
+    return this.userModel.updateOne({_id:updateUserDto._id},{$set:{
+        gmail:updateUserDto.gmail,
+        name:updateUserDto.name,
+        gender:updateUserDto.gender,
+        birthday:updateUserDto.birthday,
+        phone:updateUserDto.phone,
+        avatar:updateUserDto.avatar
+    }})
   }
 
   remove(id: string) {

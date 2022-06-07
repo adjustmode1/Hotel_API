@@ -1,21 +1,42 @@
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { HashService } from './../hash/hash.service';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import * as fs from 'fs';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('create')
+  @UseInterceptors(FileInterceptor('avatar',{
+    storage:diskStorage({
+      destination:"src/avatar/",
+      filename:(req,file,cb)=>{
+        cb(null,Date.now()+file.originalname)
+      }
+    })
+  }))
   @UsePipes(new ValidationPipe({transform:true}))
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto,@UploadedFile() file:Express.Multer.File) {
     console.log(createUserDto)
     let hash = new HashService();
     let pass_hash = await hash.hash(createUserDto.password);
     createUserDto.password = pass_hash;
-    return this.userService.create(createUserDto);
+    createUserDto.avatar = "";
+    if(!!file){
+      createUserDto.avatar = "src/avatar/"+file.filename;
+    }
+    return this.userService.create(createUserDto)
+    .then(res=>{
+      return res;
+    })
+    .catch(err=>{
+      fs.rmSync('src/avatar/'+file.filename)
+      return err.result;
+    })
   }
 
   @Get('list')
@@ -28,15 +49,47 @@ export class UserController {
     console.log(id)
     return this.userService.findOne(id);
   }
-
+  
   //chưa xong
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch('update')
+  @UseInterceptors(FileInterceptor('avatar',{
+    storage:diskStorage({
+      destination:'src/avatar',
+      filename:(req,file,cb)=>{
+        cb(null,Date.now()+file.originalname)
+      }
+    })
+  }))
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(@Body() updateUserDto: UpdateUserDto,@UploadedFile() file:Express.Multer.File){
+    let user = await this.userService.findOne(updateUserDto._id);
+    if(!!file){
+      updateUserDto.avatar = "src/avatar/"+file.filename;
+    }
+    if(!!user){
+      return this.userService.update(updateUserDto).then(res=>{
+        fs.rmSync(user.avatar.toString())
+        return res;
+      }).catch(err=>{
+        fs.rmSync("src/avatar/"+file.filename)
+        return err;
+      })
+    }
+    throw new HttpException("not found",400)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  async remove(@Param('id') id: string) {
+    let user = await this.userService.findOne(id);
+    if(user){
+      return this.userService.remove(id).then(res=>{
+        fs.rmSync(user[0].avatar.toString())
+        return {
+          status:200,
+          data:'ok'
+        }
+      })
+    }
+    throw new HttpException("not found",400)
   }
 }

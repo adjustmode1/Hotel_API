@@ -2,7 +2,7 @@ import { StaffUpdateDto } from './dto/staff.update.dto';
 import { StaffCreateDto } from './dto/staff.create.dto';
 import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Types,Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Staff, StaffDocument } from './schema/staff.schema';
 
 @Injectable()
@@ -14,7 +14,6 @@ export class StaffService {
     }
 
     findByIdOne(id:string){
-        console.log(id)
         return this.staffModel.findOne({_id: id}).exec();
     }
     findAll(){
@@ -56,9 +55,7 @@ export class StaffService {
     }
 
     removeOne(gmail:string){
-        let result = this.staffModel.deleteOne({
-            gmail
-        });
+        let result = this.staffModel.deleteOne({gmail});
         console.log(result)
         return result
     }

@@ -1,16 +1,18 @@
-import { IsBoolean, IsNotEmpty, MinLength, IsAlphanumeric, IsEmail, IsPhoneNumber, IsNumberString, Min } from 'class-validator';
+import { IsBoolean, IsNotEmpty, MinLength, IsAlphanumeric, IsEmail, IsNumberString, IsDateString, IsString } from 'class-validator';
 export class CreateUserDto {
     @IsNotEmpty()
     @IsEmail()
     gmail:string;
 
     @IsNotEmpty()
+    @IsString()
     name:string;
 
-    @IsBoolean()
-    gender:Boolean;
-
     @IsNotEmpty()
+    gender:Boolean;
+    
+    @IsNotEmpty()
+    @IsDateString()
     birthday:Date;
 
     @IsNotEmpty()
@@ -22,5 +24,5 @@ export class CreateUserDto {
     @MinLength(8)
     phone:string;
 
-    avatar:string;
+    avatar?:string;
 }

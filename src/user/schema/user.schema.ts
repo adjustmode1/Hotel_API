@@ -3,12 +3,13 @@ import mongoose, { Document, SchemaType } from "mongoose";
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({collection:"users"})
 export class User{
     @Prop({
-        type:mongoose.Types.ObjectId
+        type:String,
+        unique:true
     })
-    _id:string;
+    gmail:string;
 
     @Prop()
     name:string;
