@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { diskStorage } from 'multer';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
@@ -8,27 +10,38 @@ export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.create(createRoomDto);
+  @UseInterceptors(FilesInterceptor('image',10,{
+    storage:diskStorage({
+      destination:'src/save_upload',
+      filename:(req,file,cb)=>{
+        cb(null,Date.now()+file.originalname);
+      }
+    })
+  }))
+  create(@Body() createRoomDto: CreateRoomDto,@UploadedFiles() files:Express.Multer.File) {
+    // return this.roomService.create(createRoomDto);
+    console.log(files)
+    return 'ok'
   }
 
-  @Get()
+  @Get('list')
   findAll() {
     return this.roomService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+    return this.roomService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(+id, updateRoomDto);
+  //chưa xong
+  @Patch('update')
+  update(@Body() updateRoomDto: UpdateRoomDto) {
+    return this.roomService.update(updateRoomDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.roomService.remove(+id);
+    return this.roomService.remove(id);
   }
 }
