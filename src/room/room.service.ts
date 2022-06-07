@@ -9,7 +9,23 @@ import { Room, RoomDocument } from './schema/room.schema.ts';
 export class RoomService {
   constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>){}
   create(createRoomDto: CreateRoomDto) {
-    return this.roomModel.find().exec();
+    return this.roomModel.insertMany({
+      name:createRoomDto.name,
+      id_type_room:createRoomDto.idTypeRoom,
+      status:createRoomDto.status,
+      image:createRoomDto.image
+    }).then(res=>{
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      return {
+        status:400,
+        data:err
+      }
+    })
   }
 
   findAll() {
