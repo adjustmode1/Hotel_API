@@ -76,9 +76,21 @@ export class RoomController {
   async update(@Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
     let room = await this.roomService.findOne(updateRoomDto._id.toString());
     if(room.status===200&&room.data.length>0){
-      this.roomService.update(updateRoomDto);
+      let images:string[] = [];
+      files.forEach(file=>{
+        let path = "src/storage/"+updateRoomDto._id+"/"
+        images.push(path+file.filename);
+      })
+      updateRoomDto.image = images;
+      let result = await this.roomService.update(updateRoomDto)
+      if(result.status === 200){
+        return 
+      }
     }
-    return "ok"
+    return {
+      status:400,
+      data:"not found"
+    }
   }
 
   @Delete(':id')

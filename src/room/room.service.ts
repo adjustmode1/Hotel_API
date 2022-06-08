@@ -58,8 +58,23 @@ export class RoomService {
     // return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
 
     // }})
-    this.roomModel.findOneAndUpdate()
-    return "updated";
+    return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
+      name:updateRoomDto.name,
+      id_type_room:updateRoomDto.idTypeRoom,
+      status:updateRoomDto.status,
+      image:updateRoomDto.image
+    }}).then(res=>{
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      return{
+        status:400,
+        data:err
+      }
+    })
   }
 
   remove(id: string) {
