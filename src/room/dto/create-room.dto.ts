@@ -1,5 +1,8 @@
 import { IsNotEmpty } from 'class-validator';
+import mongoose from 'mongoose';
 export class CreateRoomDto {
+    _id?:mongoose.Types.ObjectId;
+
     @IsNotEmpty()
     name:string;
     
@@ -9,5 +12,5 @@ export class CreateRoomDto {
     @IsNotEmpty()
     status:boolean;
 
-    image?:[string]
+    image?:string[]
 }

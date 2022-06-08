@@ -5,12 +5,13 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import * as fs from 'fs';
+import mongoose from 'mongoose';
 @Controller('room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @Post('create')
-  @UseInterceptors(FilesInterceptor('image',10,{
+  @UseInterceptors(FilesInterceptor('images',10,{
     storage:diskStorage({
       destination:'src/save_upload',
       filename:(req,file,cb)=>{
@@ -20,22 +21,23 @@ export class RoomController {
   }))
   @UsePipes(new ValidationPipe({transform:true}))
   async create(@Body() createRoomDto: CreateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
-    console.log(createRoomDto)
-    let image:[string];
+    let id = new mongoose.Types.ObjectId()
+    createRoomDto._id = id;
+    let images:string[] = []
+    let folder:string = 'src/storage/'+createRoomDto._id+'/';
     if(files.length>0){
-      console.log('has file')
       files.forEach(file => {
-        let path:string = "src/save_upload/"+file.filename; 
-        // fs.rmSync(path);
-        image.push(path);
+        let path:string = folder+file.filename; 
+        images.push(path);
       });
     }
+    createRoomDto.image = images;
     let result = await this.roomService.create(createRoomDto);
     if(result.status===200){
-      let folder:string = 'src/storage/'+createRoomDto.name+'/';
       if(!fs.existsSync(folder)){
         fs.mkdirSync(folder)
       }
+
       files.forEach(file=>{
         let path:string = "src/save_upload/"+file.filename; 
         let newpath = folder + file.filename;
@@ -63,12 +65,32 @@ export class RoomController {
 
   //chưa xong
   @Patch('update')
-  update(@Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(updateRoomDto);
+  @UseInterceptors(FilesInterceptor("images",10,{
+    storage:diskStorage({
+      destination:'src/save_upload',
+      filename:(req,file,cb)=>{
+        cb(null,Date.now+file.originalname);
+      }
+    })
+  }))
+  async update(@Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
+    let room = await this.roomService.findOne(updateRoomDto._id.toString());
+    if(room.status===200&&room.data.length>0){
+      this.roomService.update(updateRoomDto);
+    }
+    return "ok"
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomService.remove(id);
+  async remove(@Param('id') id: string) {
+    let room = await this.roomService.findOne(id);
+    let result = await this.roomService.remove(id);
+    if(room.status===200&&result.status===200){
+        if(room.data.length>0){
+          let folder = "src/storage/"+room.data[0]._id;
+          fs.rmSync(folder, { recursive: true, force: true });
+        }
+    }
+    return result
   }
 }
