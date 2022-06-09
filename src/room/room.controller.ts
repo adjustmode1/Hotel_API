@@ -39,7 +39,7 @@ export class RoomController {
       }
 
       files.forEach(file=>{
-        let path:string = "src/save_upload/"+file.filename; 
+        const path:string = "src/save_upload/"+file.filename; 
         let newpath = folder + file.filename;
         fs.renameSync(path,newpath)
       })

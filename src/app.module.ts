@@ -13,9 +13,10 @@ import { HashModule } from './hash/hash.module';
 import { FileModule } from './file/file.module';
 import { AuthenModule } from './authen/authen.module';
 import { AuthorModule } from './author/author.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule],
+  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule, OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })
