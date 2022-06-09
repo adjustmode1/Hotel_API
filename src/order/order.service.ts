@@ -10,19 +10,62 @@ export class OrderService {
   constructor(@InjectModel(Order.name) private orderModel:Model<OrderDocument>){}
 
   create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+    return this.orderModel.insertMany({
+      idUser:createOrderDto.idUser,
+      totalPerson:createOrderDto.totalPerson,
+      startDate:createOrderDto.startDate,
+      endDate:createOrderDto.endDate,
+      status:createOrderDto.status,
+      services:createOrderDto.services,
+      rooms:createOrderDto.rooms
+    }).then(res=>{
+      console.log(res)
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      console.log(err)
+      return{
+        status:400,
+        data:err
+      }
+    })
   }
 
   findAll() {
-    return this.orderModel.find().populate('');
+    return this.orderModel.find().populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} order`;
+    return this.orderModel.find({_id:id}).populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
   }
 
-  update(id: string, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  update(updateOrderDto: UpdateOrderDto) {
+    return this.orderModel.updateOne({_id:updateOrderDto.id},{$set:{
+      idUser:updateOrderDto.idUser,
+      totalPerson:updateOrderDto.totalPerson,
+      startDate:updateOrderDto.startDate,
+      endDate:updateOrderDto.endDate,
+      status:updateOrderDto.status,
+      services:updateOrderDto.services,
+      rooms:updateOrderDto.rooms
+    }})
+    .then(res=>{
+      console.log(res)
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      console.log(err)
+      return {
+        status:400,
+        data:err
+      }
+    })
   }
 
   remove(id: string) {

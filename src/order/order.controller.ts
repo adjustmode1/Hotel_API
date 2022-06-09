@@ -10,7 +10,6 @@ export class OrderController {
   @Post('create')
   @UsePipes(new ValidationPipe({transform:true}))
   create(@Body() createOrderDto: CreateOrderDto) {
-    console.log(createOrderDto)
     return this.orderService.create(createOrderDto);
   }
 
@@ -24,9 +23,9 @@ export class OrderController {
     return this.orderService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(id, updateOrderDto);
+  @Patch('update')
+  update(@Body() updateOrderDto: UpdateOrderDto) {
+    return this.orderService.update(updateOrderDto);
   }
 
   @Delete(':id')

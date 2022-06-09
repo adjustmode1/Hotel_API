@@ -1,6 +1,9 @@
 import { Document, SchemaTypes } from 'mongoose';
 import { SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Schema } from '@nestjs/mongoose';
+import { User } from 'src/user/schema/user.schema';
+import { Room } from 'src/room/schema/room.schema.ts';
+import { Services } from 'src/services/schema/services.schema';
 
 export type OrderDocument = Order & Document;
 
@@ -8,7 +11,7 @@ export type OrderDocument = Order & Document;
 export class Order{
     @Prop({
         type:SchemaTypes.ObjectId,
-        ref:'users'
+        ref:User.name
     })
     idUser:string;
     
@@ -37,13 +40,13 @@ export class Order{
 
     @Prop({
         type:[SchemaTypes.ObjectId],
-        ref:'services'
+        ref:Services.name
     })
     services:string[]
 
     @Prop({
         type:[SchemaTypes.ObjectId],
-        ref:'rooms'
+        ref:Room.name
     })
     rooms:string[]
 }
