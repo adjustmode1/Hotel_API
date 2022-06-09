@@ -69,10 +69,11 @@ export class RoomController {
     storage:diskStorage({
       destination:'src/save_upload',
       filename:(req,file,cb)=>{
-        cb(null,Date.now+file.originalname);
+        cb(null,Date.now()+file.originalname);
       }
     })
   }))
+  @UsePipes(new ValidationPipe({transform:true}))
   async update(@Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
     let room = await this.roomService.findOne(updateRoomDto._id.toString());
     if(room.status===200&&room.data.length>0){
@@ -81,11 +82,29 @@ export class RoomController {
         let path = "src/storage/"+updateRoomDto._id+"/"
         images.push(path+file.filename);
       })
+      console.log("room data",room.data)
+      images = files.length>0? images:room.data.image;
       updateRoomDto.image = images;
+      console.log('image_up',images);
       let result = await this.roomService.update(updateRoomDto)
-      if(result.status === 200){
-        return 
+      if(result.status === 200){// cập nhật thanh công
+        if(files.length>0){
+          room.data[0].image.forEach(path => { // xóa ảnh cũ
+            fs.rmSync(path);
+          }); 
+        }
+        files.forEach(file=>{//chuyển file qua thư mục room
+          let oldFolder = "src/save_upload/";
+          let newFolder = "src/storage/"+room.data[0]._id+"/"
+          fs.renameSync(oldFolder+file.filename,newFolder+file.filename);
+        })
+      }else{//cập nhật không thành công
+        files.forEach(file=>{//xóa file đã upload
+          let path = "src/save_upload/";
+          fs.rmSync(path+file.filename);
+        })
       }
+      return result
     }
     return {
       status:400,

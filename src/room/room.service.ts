@@ -55,11 +55,7 @@ export class RoomService {
 
   //chưa xong
   update(updateRoomDto: UpdateRoomDto) {
-    // return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
-
-    // }})
     return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
-      name:updateRoomDto.name,
       id_type_room:updateRoomDto.idTypeRoom,
       status:updateRoomDto.status,
       image:updateRoomDto.image
