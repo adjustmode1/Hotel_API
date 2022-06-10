@@ -1,11 +1,13 @@
+import { Roles } from './../roles.decorator';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HashService } from './../hash/hash.service';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, BadRequestException, UseGuards, SetMetadata } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as fs from 'fs';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +23,8 @@ export class UserController {
     })
   }))
   @UsePipes(new ValidationPipe({transform:true}))
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   async create(@Body() createUserDto: CreateUserDto,@UploadedFile() file:Express.Multer.File) {
     console.log(createUserDto)
     let hash = new HashService();
@@ -41,6 +45,8 @@ export class UserController {
   }
 
   @Get('list')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   findAll() {
     return this.userService.findAll();
   }

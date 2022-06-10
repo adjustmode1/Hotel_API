@@ -16,9 +16,10 @@ import { AuthorModule } from './author/author.module';
 import { OrderModule } from './order/order.module';
 import { JsonwebtokenModule } from './jsonwebtoken/jsonwebtoken.module';
 import { LoginModule } from './login/login.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule, OrderModule, JsonwebtokenModule, LoginModule],
+  imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
