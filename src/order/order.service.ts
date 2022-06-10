@@ -69,6 +69,17 @@ export class OrderService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} order`;
+    return this.orderModel.deleteOne({_id:id}).then(res=>{
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      return {
+        status:400,
+        data:err
+      }
+    })
   }
 }

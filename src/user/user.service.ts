@@ -7,7 +7,8 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel:Model<UserDocument>){}
+
+  constructor(  @InjectModel(User.name) private userModel:Model<UserDocument>){}
 
   create(createUserDto: CreateUserDto) {
     return this.userModel.insertMany({
@@ -42,5 +43,21 @@ export class UserService {
 
   remove(id: string) {
     return this.userModel.deleteOne({_id:id});
+  }
+
+  loginUser(gmail){
+    return this.userModel.findOne({gmail}).exec()
+    .then(res=>{
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      return {
+        status:400,
+        data:err
+      }
+    })
   }
 }

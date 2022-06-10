@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as bscrypt from 'bcrypt';
+
 @Injectable()
 export class HashService {
     private key:string = "secret key for app";
@@ -19,8 +20,10 @@ export class HashService {
     }
 
     compare(password,hash){
+        console.log(password+"/"+hash)
         return new Promise(resolve=>{
             bscrypt.compare(password,hash,(err,result)=>{
+                console.log(err)
                 if(err)
                     throw new HttpException("server Error",500)
                 resolve(result)
