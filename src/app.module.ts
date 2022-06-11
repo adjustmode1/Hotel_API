@@ -30,6 +30,8 @@ export class AppModule {
       .apply(AuthMiddleware)
       .exclude({path:'services/(.*)',method:RequestMethod.GET})
       .exclude({path:'order/(.*)',method:RequestMethod.GET})
-      .forRoutes('services','staff','order')
+      .exclude({path:'rooms/(.*)',method:RequestMethod.GET})
+      .exclude({path:'typeRoom/(.*)',method:RequestMethod.GET})
+      .forRoutes('services','staff','order','rooms','typeRoom')
   }
 }
