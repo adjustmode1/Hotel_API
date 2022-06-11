@@ -7,7 +7,9 @@ import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('services')
 export class ServicesController {
-  constructor(private readonly servicesService: ServicesService) {}
+  constructor(
+    private readonly servicesService: ServicesService
+    ) {}
 
   @Post('create')
   @UseGuards(AuthGuard)
@@ -27,12 +29,16 @@ export class ServicesController {
   }
 
   @Patch('update')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   update(@Body() updateServiceDto: UpdateServiceDto) {
     console.log(updateServiceDto)
     return this.servicesService.update(updateServiceDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.servicesService.remove(id);
   }

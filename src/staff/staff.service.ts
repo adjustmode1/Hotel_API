@@ -73,4 +73,9 @@ export class StaffService {
             }
         });
     }
+
+    // loginAdmin(gmail){
+    //     return this.staffModel.findOne({})
+    //     });
+    // }
 }

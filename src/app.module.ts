@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -17,10 +18,18 @@ import { OrderModule } from './order/order.module';
 import { JsonwebtokenModule } from './jsonwebtoken/jsonwebtoken.module';
 import { LoginModule } from './login/login.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule],
+  // JwtModule.register({secret:"secretPassword"})],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('services');
+  }
+}
