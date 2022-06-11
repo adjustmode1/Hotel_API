@@ -3,11 +3,10 @@ import * as bscrypt from 'bcrypt';
 
 @Injectable()
 export class HashService {
-    private key:string = "secret key for app";
-    private round:number = 10;
-    constructor(){}
+    private key = "secret key for app";
+    private round = 10;
 
-    hash(password): Promise<any>{
+    hash(password): Promise<string>{
         return new Promise(resolve=>{
             bscrypt.genSalt(this.round,(err,salt)=>{
                 bscrypt.hash(password,salt,(err,hash)=>{

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,  ValidationPipe, UsePipes } from '@nestjs/common';
 import { TypeRoomService } from './type_room.service';
 import { CreateTypeRoomDto } from './dto/create-type_room.dto';
 import { UpdateTypeRoomDto } from './dto/update-type_room.dto';

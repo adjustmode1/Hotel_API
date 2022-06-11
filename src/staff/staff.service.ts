@@ -1,6 +1,6 @@
 import { StaffUpdateDto } from './dto/staff.update.dto';
 import { StaffCreateDto } from './dto/staff.create.dto';
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Staff, StaffDocument } from './schema/staff.schema';
@@ -55,7 +55,7 @@ export class StaffService {
     }
 
     removeOne(id:string){
-        let result = this.staffModel.deleteOne({_id:id});
+        const result = this.staffModel.deleteOne({_id:id});
         return result
     }
 

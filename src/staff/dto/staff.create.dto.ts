@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber, MinLength } from "class-validator";
+import { IsDateString, IsNotEmpty, MinLength } from "class-validator";
 
 export class StaffCreateDto{
     @IsNotEmpty()

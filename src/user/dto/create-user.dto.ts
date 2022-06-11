@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, MinLength, IsAlphanumeric, IsEmail, IsNumberString, IsDateString, IsString } from 'class-validator';
+import { IsNotEmpty, MinLength, IsAlphanumeric, IsEmail, IsNumberString, IsDateString, IsString } from 'class-validator';
 export class CreateUserDto {
     @IsNotEmpty()
     @IsEmail()
@@ -9,7 +9,7 @@ export class CreateUserDto {
     name:string;
 
     @IsNotEmpty()
-    gender:Boolean;
+    gender:boolean;
     
     @IsNotEmpty()
     @IsDateString()

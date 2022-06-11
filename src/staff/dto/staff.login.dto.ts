@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty} from 'class-validator';
 
 export class StaffLoginDto{
     @IsNotEmpty()

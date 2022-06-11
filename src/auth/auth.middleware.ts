@@ -1,14 +1,13 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-const jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(){}
   use(req: any, res: any, next: () => void) {
-    if(!!req.headers.authorization){
-      let token = req.headers.authorization.split(' ')[1];
+    if(req.headers.authorization){
+      const token = req.headers.authorization.split(' ')[1];
       try {
-        let result = jwt.verify(token,"secretpassword");
+        const result = jwt.verify(token,"secretpassword");
         req.roles = result.info.role;
         next()
       } catch (err) {

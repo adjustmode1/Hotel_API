@@ -2,7 +2,7 @@ import { Roles } from './../roles.decorator';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HashService } from './../hash/hash.service';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, BadRequestException, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, UseGuards} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,11 +27,11 @@ export class UserController {
   @Roles('admin')
   async create(@Body() createUserDto: CreateUserDto,@UploadedFile() file:Express.Multer.File) {
     console.log(createUserDto)
-    let hash = new HashService();
-    let pass_hash = await hash.hash(createUserDto.password);
+    const hash = new HashService();
+    const pass_hash = await hash.hash(createUserDto.password);
     createUserDto.password = pass_hash;
     createUserDto.avatar = "";
-    if(!!file){
+    if(file){
       createUserDto.avatar = "src/avatar/"+file.filename;
     }
     return this.userService.create(createUserDto)
@@ -69,11 +69,11 @@ export class UserController {
   }))
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(@Body() updateUserDto: UpdateUserDto,@UploadedFile() file:Express.Multer.File){
-    let user = await this.userService.findOne(updateUserDto._id);
-    if(!!file){
+    const user = await this.userService.findOne(updateUserDto._id);
+    if(file){
       updateUserDto.avatar = "src/avatar/"+file.filename;
     }
-    if(!!user){
+    if(user){
       return this.userService.update(updateUserDto).then(res=>{
         fs.rmSync(user.avatar.toString())
         return res;
@@ -87,9 +87,10 @@ export class UserController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    let user = await this.userService.findOne(id);
+    const user = await this.userService.findOne(id);
     if(user){
       return this.userService.remove(id).then(res=>{
+        console.log(res)
         fs.rmSync(user[0].avatar.toString())
         return {
           status:200,

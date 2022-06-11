@@ -2,7 +2,6 @@ import { JsonwebtokenService } from './../jsonwebtoken/jsonwebtoken.service';
 import { UserService } from './../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { LoginService } from './login.service';
 import { HashService } from 'src/hash/hash.service';
 import { StaffService } from 'src/staff/staff.service';
 import { AdminLoginDto } from './dto/admin.login.dto';
@@ -19,9 +18,9 @@ export class LoginController {
   @Post('user')
   @UsePipes(new ValidationPipe({transform:true}))
   async loginUser(@Body() info:LoginDto){
-    let result = await this.userService.loginUser(info.gmail)
+    const result = await this.userService.loginUser(info.gmail)
     if(result.status===200){
-      let hashing = await this.hash.compare(info.password,result.data.password);
+      const hashing = await this.hash.compare(info.password,result.data.password);
       if(hashing){
         return {
           status:200,
@@ -43,9 +42,9 @@ export class LoginController {
   @Post('admin')
   @UsePipes(new ValidationPipe({transform:true}))
   async loginAdmin(@Body() info:AdminLoginDto){
-    let result = await this.adminService.loginAdmin(info.id)
+    const result = await this.adminService.loginAdmin(info.id)
     if(result.status===200){
-      let hashing = await this.hash.compare(info.password,result.data.password);
+      const hashing = await this.hash.compare(info.password,result.data.password);
       if(hashing){
         return {
           status:200,

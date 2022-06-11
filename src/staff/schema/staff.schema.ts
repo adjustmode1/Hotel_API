@@ -1,8 +1,5 @@
-import { HashService } from './../../hash/hash.service';
-import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Blob } from "buffer";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import { Avatar } from "./file.schema";
 
 export type StaffDocument = Staff & Document;
 
