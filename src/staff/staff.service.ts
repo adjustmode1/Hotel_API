@@ -10,7 +10,7 @@ export class StaffService {
     constructor(@InjectModel(Staff.name) private staffModel:Model<StaffDocument>){}
 
     findOne(id){
-       return this.staffModel.findOne({gmail:id}).exec();
+       return this.staffModel.findOne({_id:id}).exec();
     }
 
     findByIdOne(id:string){
@@ -23,7 +23,7 @@ export class StaffService {
     create(staff:StaffCreateDto,file){
         console.log('type file',typeof(file))
         return this.staffModel.insertMany({
-            gmail:staff.gmail,
+            id:staff.id,
             password:staff.password,
             name:staff.name,
             birthday:staff.birthday,
@@ -54,16 +54,15 @@ export class StaffService {
         })
     }
 
-    removeOne(gmail:string){
-        let result = this.staffModel.deleteOne({gmail});
-        console.log(result)
+    removeOne(id:string){
+        let result = this.staffModel.deleteOne({_id:id});
         return result
     }
 
     update(id,info:StaffUpdateDto){
         return this.staffModel.updateOne({_id:id},{$set:
             {
-                gmail:info.gmail,
+                id:info.id,
                 name:info.name,
                 birthday:info.birthday,
                 role:info.role,
@@ -74,8 +73,19 @@ export class StaffService {
         });
     }
 
-    // loginAdmin(gmail){
-    //     return this.staffModel.findOne({})
-    //     });
-    // }
+    loginAdmin(id){
+        return this.staffModel.findOne({id}).exec()
+        .then(res=>{
+          return {
+            status:200,
+            data:res
+          }
+        })
+        .catch(err=>{
+          return {
+            status:400,
+            data:err
+          }
+        })
+      }
 }

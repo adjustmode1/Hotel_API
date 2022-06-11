@@ -8,6 +8,7 @@ import { Staff, StaffSchema } from './schema/staff.schema';
 @Module({
   imports:[MongooseModule.forFeature([{name:Staff.name,schema:StaffSchema}]),HashModule],
   controllers: [StaffController],
-  providers: [StaffService]
+  providers: [StaffService],
+  exports:[StaffService]
 })
 export class StaffModule {}

@@ -1,5 +1,4 @@
-import { JwtModule } from '@nestjs/jwt';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -22,7 +21,6 @@ import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [DatabaseModule, StaffModule, TestModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, FileModule, AuthenModule, AuthorModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule],
-  // JwtModule.register({secret:"secretPassword"})],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -30,6 +28,8 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('services');
+      .exclude({path:'services/(.*)',method:RequestMethod.GET})
+      .exclude({path:'order/(.*)',method:RequestMethod.GET})
+      .forRoutes('services','staff','order')
   }
 }

@@ -17,8 +17,6 @@ export class AuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     console.log('req',req.roles)
     if(!!req.roles){
-      console.log('role in',role)
-      console.log('role to',req.roles)
       return role.indexOf(req.roles)!==-1;
     }else{
       return false;

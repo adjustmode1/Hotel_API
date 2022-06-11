@@ -2,7 +2,7 @@ import { IsDateString, IsNotEmpty, IsNumber, MinLength } from "class-validator";
 
 export class StaffCreateDto{
     @IsNotEmpty()
-    gmail:string;
+    id:string;
 
     @IsNotEmpty()
     @MinLength(8)

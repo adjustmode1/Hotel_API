@@ -19,7 +19,7 @@ export class Staff{
         unique:true,
         required:true,
     })
-    gmail:string;
+    id:string;
 
     @Prop({
         type:String,

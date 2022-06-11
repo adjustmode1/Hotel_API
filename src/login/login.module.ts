@@ -1,3 +1,4 @@
+import { StaffModule } from './../staff/staff.module';
 import { JsonwebtokenModule } from './../jsonwebtoken/jsonwebtoken.module';
 import { User, UserSchema } from './../user/schema/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,7 +9,7 @@ import { LoginController } from './login.controller';
 import { HashModule } from 'src/hash/hash.module';
 
 @Module({
-  imports:[UserModule,HashModule,JsonwebtokenModule],
+  imports:[UserModule,StaffModule,HashModule,JsonwebtokenModule],
   controllers: [LoginController],
   providers: [LoginService]
 })

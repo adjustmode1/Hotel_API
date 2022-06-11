@@ -1,33 +1,30 @@
 import { HashService } from './../hash/hash.service';
 import { StaffUpdateDto } from './dto/staff.update.dto';
 import { StaffLoginDto } from './dto/staff.login.dto';
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe, HttpException, UnauthorizedException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UsePipes, ValidationPipe, HttpException, UnauthorizedException, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { StaffCreateDto } from './dto/staff.create.dto';
 import { StaffService } from './staff.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/roles.decorator';
+
 @Controller('staff')
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
+
   @Get('list')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   async test(@Query() query){
+    console.log('listall')
     return this.staffService.findAll()
   }
 
-  @Post('login')
-  @UsePipes(new ValidationPipe({transform:true}))
-  async login(@Body() login:StaffLoginDto){
-    let hash = new HashService();
-    let user = await this.staffService.findOne(login.id);
-    if(await hash.compare(login.password,user.password)){
-      return true;
-    }else{
-      return false;
-    }
-  }
-
   @Post('create')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('avatar',{
     storage:diskStorage({
       destination:'src/avatar',
@@ -58,12 +55,19 @@ export class StaffController {
   }
 
   @Delete('delete/:id')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   async remove(@Param('id') id:string){
     let staff = await this.staffService.findOne(id);
+    console.log('delet',staff)
     if(!!staff){
       let result = await this.staffService.removeOne(id);
       if(result.deletedCount===1){
-        fs.rmSync(staff.avatar);
+        try {
+          fs.rmSync(staff.avatar)
+        } catch (error) {
+          
+        }
       }
       return result.deletedCount
     }
@@ -71,6 +75,8 @@ export class StaffController {
   }
 
   @Put('update')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   @UseInterceptors(FileInterceptor('avatar',{
     storage:diskStorage({
       destination:'src/avatar',
