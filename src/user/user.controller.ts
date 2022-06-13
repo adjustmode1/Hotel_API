@@ -24,7 +24,7 @@ export class UserController {
   }))
   @UsePipes(new ValidationPipe({transform:true}))
   @UseGuards(AuthGuard)
-  @Roles('admin')
+  @Roles('admin','user')
   async create(@Body() createUserDto: CreateUserDto,@UploadedFile() file:Express.Multer.File) {
     console.log(createUserDto)
     const hash = new HashService();
@@ -45,20 +45,19 @@ export class UserController {
   }
 
   @Get('list')
-  @UseGuards(AuthGuard)
-  @Roles('admin')
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log(id)
     return this.userService.findOne(id);
   }
   
   //chưa xong
   @Patch('update')
+  @UseGuards(AuthGuard)
+  @Roles('admin','user')
   @UseInterceptors(FileInterceptor('avatar',{
     storage:diskStorage({
       destination:'src/avatar',
@@ -86,6 +85,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   async remove(@Param('id') id: string) {
     const user = await this.userService.findOne(id);
     if(user){

@@ -1,17 +1,21 @@
 import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe, HttpException, UseGuards } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import * as fs from 'fs';
 import mongoose from 'mongoose';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/roles.decorator';
 
 @Controller('room')
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
 
   @Post('create')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   @UseInterceptors(FilesInterceptor('images',10,{
     storage:diskStorage({
       destination:'src/save_upload',
@@ -66,6 +70,8 @@ export class RoomController {
 
   //chưa xong
   @Patch('update')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   @UseInterceptors(FilesInterceptor("images",10,{
     storage:diskStorage({
       destination:'src/save_upload',
@@ -114,6 +120,8 @@ export class RoomController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
   async remove(@Param('id') id: string) {
     const room = await this.roomService.findOne(id);
     const result = await this.roomService.remove(id);

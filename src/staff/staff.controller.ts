@@ -17,7 +17,6 @@ export class StaffController {
   @UseGuards(AuthGuard)
   @Roles('admin')
   async test(){
-    console.log('listall')
     return this.staffService.findAll()
   }
 
