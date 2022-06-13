@@ -14,9 +14,10 @@ import { JsonwebtokenModule } from './jsonwebtoken/jsonwebtoken.module';
 import { LoginModule } from './login/login.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { TestdbModule } from './testdb/testdb.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule],
+  imports: [DatabaseModule, StaffModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule, TestdbModule],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -26,8 +27,8 @@ export class AppModule {
       .apply(AuthMiddleware)
       .exclude({path:'services/(.*)',method:RequestMethod.GET})
       .exclude({path:'order/(.*)',method:RequestMethod.GET})
-      .exclude({path:'rooms/(.*)',method:RequestMethod.GET})
+      .exclude({path:'room/(.*)',method:RequestMethod.GET})
       .exclude({path:'typeRoom/(.*)',method:RequestMethod.GET})
-      .forRoutes('services','staff','order','rooms','typeRoom')
+      .forRoutes('services','staff','order','room','typeRoom')
   }
 }

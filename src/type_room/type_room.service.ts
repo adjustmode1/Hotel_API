@@ -13,7 +13,6 @@ export class TypeRoomService {
       name:createTypeRoomDto.name,
       price:createTypeRoomDto.price
     }).then(res=>{
-      console.log(res)
       return {
         status:200,
         data:res
