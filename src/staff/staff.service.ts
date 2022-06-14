@@ -1,3 +1,4 @@
+import { LogsSys, LogsSysDocument } from './../logs_sys/schema/logs_sys.schema';
 import { StaffUpdateDto } from './dto/staff.update.dto';
 import { StaffCreateDto } from './dto/staff.create.dto';
 import { Injectable} from '@nestjs/common';
@@ -7,7 +8,10 @@ import { Staff, StaffDocument } from './schema/staff.schema';
 
 @Injectable()
 export class StaffService {
-    constructor(@InjectModel(Staff.name) private staffModel:Model<StaffDocument>){}
+    constructor(
+        @InjectModel(Staff.name) private staffModel:Model<StaffDocument>, 
+        @InjectModel(LogsSys.name) private logSysModel:Model<LogsSysDocument>
+    ){}
 
     findOne(id){
        return this.staffModel.findOne({_id:id}).exec();
@@ -20,8 +24,7 @@ export class StaffService {
         return this.staffModel.find().exec();
     }
 
-    create(staff:StaffCreateDto,file){
-        console.log('type file',typeof(file))
+    create(person,staff:StaffCreateDto,file){
         return this.staffModel.insertMany({
             id:staff.id,
             password:staff.password,
@@ -33,7 +36,7 @@ export class StaffService {
             avatar:file
         })
         .then(res=>{
-            console.log('res',res)
+            this.logSysModel.insertMany({id_staff:person,action:'insert',document:"staff",data:res})
             return {
                 status:200,
                 data:res
@@ -54,12 +57,15 @@ export class StaffService {
         })
     }
 
-    removeOne(id:string){
-        const result = this.staffModel.deleteOne({_id:id});
+    async removeOne(person,id:string){
+        const result = await this.staffModel.deleteOne({_id:id});
+        if(result.deletedCount>0){
+            this.logSysModel.insertMany({id_staff:person,action:'delete',document:"staff",data:id})
+        }
         return result
     }
 
-    update(id,info:StaffUpdateDto){
+    update(person,id,info:StaffUpdateDto){
         return this.staffModel.updateOne({_id:id},{$set:
             {
                 id:info.id,
@@ -70,7 +76,19 @@ export class StaffService {
                 avatar:info.avatar,
                 salary:info.salary
             }
-        });
+        }).then(res=>{
+            this.logSysModel.insertMany({id_staff:person,action:'update',document:"staff",data:info})
+            return {
+                status:200,
+                data:res
+            }
+        })
+        .catch(err=>{
+            return {
+                status:400,
+                data:err
+            }
+        })
     }
 
     loginAdmin(id){

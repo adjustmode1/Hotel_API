@@ -3,13 +3,7 @@ import { Document } from "mongoose";
 
 export type StaffDocument = Staff & Document;
 
-@Schema({collection:"staff",
-toObject: {
-    virtuals: true,
-  },
-  toJSON: {
-    virtuals: true,
-  },})
+@Schema({collection:"staff"})
 export class Staff{
     @Prop({
         type:String,

@@ -43,7 +43,7 @@ export class LoginController {
   @UsePipes(new ValidationPipe({transform:true}))
   async loginAdmin(@Body() info:AdminLoginDto){
     const result = await this.adminService.loginAdmin(info.id)
-    if(result.status===200){
+    if(result.data!==null && result.status===200){
       const hashing = await this.hash.compare(info.password,result.data.password);
       if(hashing){
         return {
