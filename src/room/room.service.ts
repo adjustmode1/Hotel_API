@@ -37,7 +37,6 @@ export class RoomService {
 
   findAll() {
     return this.roomModel.find().populate('id_type_room').exec()
-    // return this.roomModel.find().exec();
   }
 
   findOne(id: string) {
@@ -55,7 +54,7 @@ export class RoomService {
     })
   }
 
-  //chưa xong
+
   update(person,updateRoomDto: UpdateRoomDto) {
     return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
       id_type_room:updateRoomDto.idTypeRoom,
