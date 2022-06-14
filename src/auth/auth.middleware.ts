@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
             role:String;
           }
         };
-        req.roles = result.info.role;
+        req.info = result.info;
         next()
       } catch (err) {
         if(err.name==='TokenExpiredError'){

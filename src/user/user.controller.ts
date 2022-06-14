@@ -2,7 +2,7 @@ import { Roles } from './../roles.decorator';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HashService } from './../hash/hash.service';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, UseGuards} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, HttpException, UseGuards, Request} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -87,10 +87,10 @@ export class UserController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  async remove(@Param('id') id: string) {
+  async remove(@Request() req,@Param('id') id: string) {
     const user = await this.userService.findOne(id);
     if(user){
-      return this.userService.remove(id).then(res=>{
+      return this.userService.remove(req.info.info._id,id).then(res=>{
         console.log(res)
         fs.rmSync(user[0].avatar.toString())
         return {

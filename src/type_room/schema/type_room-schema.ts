@@ -19,20 +19,6 @@ export class TypeRoom{
     })
     price:number;
 }
+const TypeRoomSchema = SchemaFactory.createForClass(TypeRoom)
 
-export const TypeRoomSchema = SchemaFactory.createForClass(TypeRoom)
-    .post('save', async (content)=>{
-        const testModel = mongoose.model('testdbs',TestDBSchema)
-        testModel.find()
-        .then(res=>{
-            console.log('f',res)
-        })
-        .catch(err=>{
-            console.log('err',err)
-        })
-        console.log('hook',content)
-    })
-    .pre('save',async (next)=>{
-        console.log('pre hook');
-        next()
-    })
+export default TypeRoomSchema;

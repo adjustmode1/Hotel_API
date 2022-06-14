@@ -13,19 +13,18 @@ export class TestDB{
 }
 
 const TestDBSchema = SchemaFactory.createForClass(TestDB)
-TestDBSchema.post('save', async (content)=>{
-            console.log('hook',content)
-        })
-        .pre('save',async (next)=>{
-            console.log('pre hook');
-            next()
-        })
+
+// TestDBSchema
+// .post('save', async (content)=>{
+//     console.log('hook',content)
+// })
+// .pre('save',async (next)=>{
+//     console.log('pre hook');
+//     next()
+// })
+TestDBSchema.pre('save',(next)=>{
+    console.log('pre');
+    next();
+})
 
 export default  TestDBSchema;
-//     .post('save', async (content)=>{
-//         console.log('hook',content)
-//     })
-//     .pre('save',async (next)=>{
-//         console.log('pre hook');
-//         next()
-//     })

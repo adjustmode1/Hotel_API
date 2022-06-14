@@ -13,9 +13,9 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const role = this.reflector.get<string[]>('roles',context.getHandler()) 
     const req = context.switchToHttp().getRequest();
-    console.log('req',req.roles)
-    if(req.roles){
-      return role.indexOf(req.roles)!==-1;
+    if(req.info.role){
+      console.log('req',req.info.role)
+      return role.indexOf(req.info.role)!==-1;
     }else{
       return false;
     }
