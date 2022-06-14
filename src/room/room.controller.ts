@@ -1,6 +1,6 @@
 import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe, HttpException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe, HttpException, UseGuards, Request } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
@@ -25,7 +25,7 @@ export class RoomController {
     })
   }))
   @UsePipes(new ValidationPipe({transform:true}))
-  async create(@Body() createRoomDto: CreateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
+  async create(@Request() req, @Body() createRoomDto: CreateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
     const id = new mongoose.Types.ObjectId()
     createRoomDto._id = id;
     const images:string[] = []
@@ -37,7 +37,7 @@ export class RoomController {
       });
     }
     createRoomDto.image = images;
-    const result = await this.roomService.create(createRoomDto);
+    const result = await this.roomService.create(req.info.info._id,createRoomDto);
     if(result.status===200){
       if(!fs.existsSync(folder)){
         fs.mkdirSync(folder)
@@ -81,7 +81,7 @@ export class RoomController {
     })
   }))
   @UsePipes(new ValidationPipe({transform:true}))
-  async update(@Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
+  async update(@Request() req, @Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
     const room = await this.roomService.findOne(updateRoomDto._id.toString());
     if(room.status===200&&room.data.length>0){
       let images:string[] = [];
@@ -93,7 +93,7 @@ export class RoomController {
       images = files.length>0? images:room.data.image;
       updateRoomDto.image = images;
       console.log('image_up',images);
-      const result = await this.roomService.update(updateRoomDto)
+      const result = await this.roomService.update(req.info.info._id,updateRoomDto)
       if(result.status === 200){// cập nhật thanh công
         if(files.length>0){
           room.data[0].image.forEach(path => { // xóa ảnh cũ
@@ -122,9 +122,9 @@ export class RoomController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  async remove(@Param('id') id: string) {
+  async remove(@Request() req, @Param('id') id: string) {
     const room = await this.roomService.findOne(id);
-    const result = await this.roomService.remove(id);
+    const result = await this.roomService.remove(req.info.info._id,id);
     if(room.status===200&&result.status===200){
         if(room.data.length>0){
           const folder = "src/storage/"+room.data[0]._id;

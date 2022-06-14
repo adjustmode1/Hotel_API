@@ -1,3 +1,4 @@
+import { LogsSys, LogsSysDocument } from './../logs_sys/schema/logs_sys.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -7,8 +8,10 @@ import { Room, RoomDocument } from './schema/room.schema.ts';
 
 @Injectable()
 export class RoomService {
-  constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>){}
-  create(createRoomDto: CreateRoomDto) {
+  constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>,
+  @InjectModel(LogsSys.name) private logSysModel:Model<LogsSysDocument>
+  ){}
+  create(person,createRoomDto: CreateRoomDto) {
     console.log('service',createRoomDto)
     return this.roomModel.insertMany({
       _id:createRoomDto._id,
@@ -17,6 +20,7 @@ export class RoomService {
       status:createRoomDto.status,
       image:createRoomDto.image
     }).then(res=>{
+      this.logSysModel.insertMany({id_staff:person,action:'insert',document:"room",data:res})
       return {
         status:200,
         data:res
@@ -52,12 +56,13 @@ export class RoomService {
   }
 
   //chưa xong
-  update(updateRoomDto: UpdateRoomDto) {
+  update(person,updateRoomDto: UpdateRoomDto) {
     return this.roomModel.updateOne({_id:updateRoomDto._id},{$set:{
       id_type_room:updateRoomDto.idTypeRoom,
       status:updateRoomDto.status,
       image:updateRoomDto.image
     }}).then(res=>{
+      this.logSysModel.insertMany({id_staff:person,action:'update',document:"room",data:res})
       return {
         status:200,
         data:res
@@ -71,8 +76,9 @@ export class RoomService {
     })
   }
 
-  remove(id: string) {
+  remove(person,id: string) {
     return this.roomModel.deleteOne({_id:id}).then(res=>{
+      this.logSysModel.insertMany({id_staff:person,action:'delete',document:"room",data:res})
       return {
         status:200,
         data:res

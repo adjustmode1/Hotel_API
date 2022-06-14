@@ -25,10 +25,13 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .exclude({path:'services/(.*)',method:RequestMethod.GET})
-      .exclude({path:'order/(.*)',method:RequestMethod.GET})
-      .exclude({path:'room/(.*)',method:RequestMethod.GET})
-      .exclude({path:'typeRoom/(.*)',method:RequestMethod.GET})
-      .forRoutes('services','staff','order','room','typeRoom')
+      .exclude(
+        {path:'order/(.*)',method:RequestMethod.GET},
+        {path:'room/(.*)',method:RequestMethod.GET},
+        {path:'typeRoom/(.*)',method:RequestMethod.GET},
+        {path:'services/(.*)',method:RequestMethod.GET},
+        {path:'user/(.*)',method:RequestMethod.GET},
+      )
+      .forRoutes('services','staff','order','room','typeRoom','user')
   }
 }

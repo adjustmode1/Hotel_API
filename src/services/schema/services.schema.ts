@@ -16,16 +16,6 @@ export class Services{
         required:true
     })
     price:number;
-
-    @Prop({
-        type:{
-        name:String,
-        id:String}
-    })
-    document:{
-        name:string,
-        id:string
-    };
 }
 
 export const ServicesSchema = SchemaFactory.createForClass(Services)

@@ -16,6 +16,7 @@ export class UserService {
   ){}
 
   create(createUserDto: CreateUserDto) {
+    console.log('dâta',createUserDto)
     return this.userModel.insertMany({
       gmail:createUserDto.gmail,
       name:createUserDto.name,
@@ -24,7 +25,19 @@ export class UserService {
       password:createUserDto.password,
       phone:createUserDto.phone,
       avatar:createUserDto.avatar
-    });
+    }).then(res=>{
+      return {
+        status:200,
+        data:res
+      }
+    })
+    .catch(err=>{
+      console.log('err',err)
+      return {
+        status:400,
+        data:err
+      }
+    })
   }
 
   findAll() {

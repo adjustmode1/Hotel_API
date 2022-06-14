@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -14,8 +14,8 @@ export class ServicesController {
   @Post('create')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  create(@Request() req, @Body() createServiceDto: CreateServiceDto) {
+    return this.servicesService.create(req.info.info._id,createServiceDto);
   }
 
   @Get('list')
@@ -31,15 +31,14 @@ export class ServicesController {
   @Patch('update')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  update(@Body() updateServiceDto: UpdateServiceDto) {
-    console.log(updateServiceDto)
-    return this.servicesService.update(updateServiceDto);
+  update(@Request() req, @Body() updateServiceDto: UpdateServiceDto) {
+    return this.servicesService.update(req.info.info._id,updateServiceDto);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  remove(@Param('id') id: string) {
-    return this.servicesService.remove(id);
+  remove(@Request() req, @Param('id') id: string) {
+    return this.servicesService.remove(req.info.info._id,id);
   }
 }

@@ -23,8 +23,6 @@ export class UserController {
     })
   }))
   @UsePipes(new ValidationPipe({transform:true}))
-  @UseGuards(AuthGuard)
-  @Roles('admin','user')
   async create(@Body() createUserDto: CreateUserDto,@UploadedFile() file:Express.Multer.File) {
     console.log(createUserDto)
     const hash = new HashService();
@@ -34,14 +32,13 @@ export class UserController {
     if(file){
       createUserDto.avatar = "src/avatar/"+file.filename;
     }
-    return this.userService.create(createUserDto)
-    .then(res=>{
-      return res;
-    })
-    .catch(err=>{
-      fs.rmSync('src/avatar/'+file.filename)
-      return err.result;
-    })
+    let result = await this.userService.create(createUserDto);
+    if(result.status===400){
+      if(file){
+        fs.rmSync('src/avatar/'+file.filename)
+      }
+    }
+    return result;
   }
 
   @Get('list')

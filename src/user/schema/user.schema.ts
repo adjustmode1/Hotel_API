@@ -10,7 +10,9 @@ export class User{
     })
     gmail:string;
 
-    @Prop()
+    @Prop({
+        type:String
+    })
     name:string;
 
     @Prop()
@@ -19,13 +21,19 @@ export class User{
     @Prop()
     birthday:Date;
 
-    @Prop()
+    @Prop({
+        type:String
+    })
     password:string;
 
-    @Prop()
+    @Prop({
+        type:String
+    })
     phone:string;
 
-    @Prop()
+    @Prop({
+        type:String
+    })
     avatar:string;
 }
 
