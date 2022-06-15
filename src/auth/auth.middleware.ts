@@ -9,8 +9,10 @@ export class AuthMiddleware implements NestMiddleware {
       try {
         const result = jwt.verify(token,"secretpassword") as {
           info:{
-            info:{}
-            role:String;
+            info:{
+              _id:string
+            },
+            role:string;
           }
         };
         req.info = result.info;

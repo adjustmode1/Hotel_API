@@ -32,7 +32,7 @@ export class UserController {
     if(file){
       createUserDto.avatar = "src/avatar/"+file.filename;
     }
-    let result = await this.userService.create(createUserDto);
+    const result = await this.userService.create(createUserDto);
     if(result.status===400){
       if(file){
         fs.rmSync('src/avatar/'+file.filename)

@@ -30,6 +30,7 @@ export class RoomController {
     createRoomDto._id = id;
     const images:string[] = []
     const folder:string = 'src/storage/'+createRoomDto._id+'/';
+    console.log('files',files)
     if(files.length>0){
       files.forEach(file => {
         const path:string = folder+file.filename; 

@@ -6,7 +6,8 @@ export type UserDocument = User & Document;
 export class User{
     @Prop({
         type:String,
-        unique:true
+        unique:true,
+        required:true
     })
     gmail:string;
 

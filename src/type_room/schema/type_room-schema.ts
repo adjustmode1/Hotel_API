@@ -1,7 +1,4 @@
-import TestDBSchema, { TestDBDocument} from './../../testdb/schema/testdb.schema';
-import { InjectModel, Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Document, model } from "mongoose";
-import { TestDB } from "src/testdb/schema/testdb.schema";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 export type TypeRoomDocument = TypeRoom & Document;
 

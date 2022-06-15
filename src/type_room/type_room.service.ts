@@ -43,7 +43,7 @@ export class TypeRoomService {
   }
 
   async update(person,updateTypeRoomDto: UpdateTypeRoomDto) {
-    let result = await this.typeRoomModel.updateOne({_id:updateTypeRoomDto.id},{
+    const result = await this.typeRoomModel.updateOne({_id:updateTypeRoomDto.id},{
       name:updateTypeRoomDto.name,
       price:updateTypeRoomDto.price
     });
@@ -55,7 +55,7 @@ export class TypeRoomService {
 
 
   async remove(person,id: string) {
-    let result = await this.typeRoomModel.deleteOne({_id:id});
+    const result = await this.typeRoomModel.deleteOne({_id:id});
     if(result.deletedCount>0){
       this.logSysModel.insertMany({id_staff:person,action:'delete',document:"type room",data:{_id:id}})
     }

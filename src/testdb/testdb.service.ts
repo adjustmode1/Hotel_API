@@ -23,6 +23,7 @@ export class TestdbService {
   }
 
   update(id: number, updateTestdbDto: UpdateTestdbDto) {
+    console.log(updateTestdbDto)
     return `This action updates a #${id} testdb`;
   }
 

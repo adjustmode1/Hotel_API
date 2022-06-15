@@ -42,6 +42,10 @@ export class OrderService {
     return this.orderModel.find({_id:id}).populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
   }
 
+  listMyOrder(id:string){
+    return this.orderModel.find().populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
+  }
+
   update(updateOrderDto: UpdateOrderDto) {
     return this.orderModel.updateOne({_id:updateOrderDto.id},{$set:{
       idUser:updateOrderDto.idUser,
@@ -82,4 +86,5 @@ export class OrderService {
       }
     })
   }
+
 }

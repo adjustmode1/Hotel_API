@@ -60,7 +60,7 @@ export class ServicesService {
   }
 
   async remove(person,id: string) {
-    let result = await this.servicesModel.deleteOne({_id:id});
+    const result = await this.servicesModel.deleteOne({_id:id});
     if(result.deletedCount>0){
       this.logSysModel.insertMany({id_staff:person,action:'delete',document:"services",data:{id}})
     }
