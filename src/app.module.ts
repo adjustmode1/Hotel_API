@@ -15,9 +15,10 @@ import { LoginModule } from './login/login.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { TestdbModule } from './testdb/testdb.module';
+import { TestappModule } from './testapp/testapp.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule, TestdbModule],
+  imports: [DatabaseModule, StaffModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule, TestdbModule, TestappModule],
   controllers: [AppController],
   providers: [AppService],
 })
