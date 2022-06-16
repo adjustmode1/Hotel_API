@@ -43,6 +43,10 @@ export class OrderService {
   }
 
   listMyOrder(id:string){
+    return this.orderModel.find({idUser:id}).populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
+  }
+
+  sales(){
     return this.orderModel.find().populate(['idUser',{path:'rooms',populate:{path:'id_type_room'}},'services']);
   }
 
