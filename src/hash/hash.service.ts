@@ -3,30 +3,28 @@ import * as bscrypt from 'bcrypt';
 
 @Injectable()
 export class HashService {
-    private key = "secret key for app";
-    private round = 10;
+  private key = 'secret key for app';
+  private round = 10;
 
-    hash(password): Promise<string>{
-        return new Promise(resolve=>{
-            bscrypt.genSalt(this.round,(err,salt)=>{
-                bscrypt.hash(password,salt,(err,hash)=>{
-                    if(err)
-                        throw new HttpException("server Error",500);
-                    resolve(hash)
-                })
-            })
-        })
-    }
+  hash(password): Promise<string> {
+    return new Promise((resolve) => {
+      bscrypt.genSalt(this.round, (err, salt) => {
+        bscrypt.hash(password, salt, (err, hash) => {
+          if (err) throw new HttpException('server Error', 500);
+          resolve(hash);
+        });
+      });
+    });
+  }
 
-    compare(password,hash){
-        console.log(password+"/"+hash)
-        return new Promise(resolve=>{
-            bscrypt.compare(password,hash,(err,result)=>{
-                console.log(err)
-                if(err)
-                    throw new HttpException("server Error",500)
-                resolve(result)
-            });
-        })
-    }
+  compare(password, hash) {
+    console.log(password + '/' + hash);
+    return new Promise((resolve) => {
+      bscrypt.compare(password, hash, (err, result) => {
+        console.log(err);
+        if (err) throw new HttpException('server Error', 500);
+        resolve(result);
+      });
+    });
+  }
 }

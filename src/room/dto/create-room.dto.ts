@@ -1,16 +1,16 @@
 import { IsNotEmpty } from 'class-validator';
 import mongoose from 'mongoose';
 export class CreateRoomDto {
-    _id?:mongoose.Types.ObjectId;
+  _id?: mongoose.Types.ObjectId;
 
-    @IsNotEmpty()
-    name:string;
-    
-    @IsNotEmpty()
-    idTypeRoom:string;
+  @IsNotEmpty()
+  name: string;
 
-    @IsNotEmpty()
-    status:boolean;
+  @IsNotEmpty()
+  idTypeRoom: string;
 
-    image?:string[]
+  @IsNotEmpty()
+  status: boolean;
+
+  image?: string[];
 }

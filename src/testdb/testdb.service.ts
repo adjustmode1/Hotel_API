@@ -7,11 +7,12 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class TestdbService {
-
-  constructor(@InjectModel(TestDB.name) private testDBModel:Model<TestDBDocument>){}
+  constructor(
+    @InjectModel(TestDB.name) private testDBModel: Model<TestDBDocument>,
+  ) {}
 
   create(createTestdbDto: CreateTestdbDto) {
-    return this.testDBModel.insertMany(createTestdbDto)
+    return this.testDBModel.insertMany(createTestdbDto);
   }
 
   findAll() {
@@ -23,7 +24,7 @@ export class TestdbService {
   }
 
   update(id: number, updateTestdbDto: UpdateTestdbDto) {
-    console.log(updateTestdbDto)
+    console.log(updateTestdbDto);
     return `This action updates a #${id} testdb`;
   }
 

@@ -8,47 +8,47 @@ import { Services } from 'src/services/schema/services.schema';
 export type OrderDocument = Order & Document;
 
 @Schema()
-export class Order{
-    @Prop({
-        type:SchemaTypes.ObjectId,
-        ref:User.name
-    })
-    idUser:string;
-    
-    @Prop({
-        type:Number,
-        required:true
-    })
-    totalPerson:number;
+export class Order {
+  @Prop({
+    type: SchemaTypes.ObjectId,
+    ref: User.name,
+  })
+  idUser: string;
 
-    @Prop({
-        type:Date,
-        required:true
-    })
-    startDate:Date;
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  totalPerson: number;
 
-    @Prop({
-        type:Date,
-    })
-    endDate:Date;
+  @Prop({
+    type: Date,
+    required: true,
+  })
+  startDate: Date;
 
-    @Prop({
-        type:Number,
-        default:0
-    })
-    status:number;
+  @Prop({
+    type: Date,
+  })
+  endDate: Date;
 
-    @Prop({
-        type:[SchemaTypes.ObjectId],
-        ref:Services.name
-    })
-    services:string[]
+  @Prop({
+    type: Number,
+    default: 0,
+  })
+  status: number;
 
-    @Prop({
-        type:[SchemaTypes.ObjectId],
-        ref:Room.name
-    })
-    rooms:string[]
+  @Prop({
+    type: [SchemaTypes.ObjectId],
+    ref: Services.name,
+  })
+  services: string[];
+
+  @Prop({
+    type: [SchemaTypes.ObjectId],
+    ref: Room.name,
+  })
+  rooms: string[];
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

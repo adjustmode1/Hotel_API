@@ -6,8 +6,13 @@ import { TypeRoomController } from './type_room.controller';
 import TypeRoomSchema, { TypeRoom } from './schema/type_room-schema';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:TypeRoom.name,schema:TypeRoomSchema}]),MongooseModule.forFeature([{name:LogsSys.name,schema:LogsSysSchema}])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: TypeRoom.name, schema: TypeRoomSchema },
+    ]),
+    MongooseModule.forFeature([{ name: LogsSys.name, schema: LogsSysSchema }]),
+  ],
   controllers: [TypeRoomController],
-  providers: [TypeRoomService]
+  providers: [TypeRoomService],
 })
 export class TypeRoomModule {}

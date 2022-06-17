@@ -3,6 +3,6 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-    @IsNotEmpty()
-    _id:string;
+  @IsNotEmpty()
+  _id: string;
 }

@@ -3,8 +3,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { JsonwebtokenService } from './jsonwebtoken.service';
 
 @Module({
-  imports:[JwtModule.register({secret:"secretpassword",signOptions:{expiresIn:'1h'}})],
+  imports: [
+    JwtModule.register({
+      secret: 'secretpassword',
+      signOptions: { expiresIn: '1h' },
+    }),
+  ],
   providers: [JsonwebtokenService],
-  exports:[JsonwebtokenService]
+  exports: [JsonwebtokenService],
 })
 export class JsonwebtokenModule {}

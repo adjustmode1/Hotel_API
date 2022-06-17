@@ -1,28 +1,28 @@
-import { IsDateString, IsNotEmpty, MinLength } from "class-validator";
+import { IsDateString, IsNotEmpty, MinLength } from 'class-validator';
 
-export class StaffCreateDto{
-    @IsNotEmpty()
-    id:string;
+export class StaffCreateDto {
+  @IsNotEmpty()
+  id: string;
 
-    @IsNotEmpty()
-    @MinLength(8)
-    password:string;
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
 
-    @IsNotEmpty()
-    name:string;
+  @IsNotEmpty()
+  name: string;
 
-    @IsNotEmpty()
-    @IsDateString()
-    birthday:Date;
+  @IsNotEmpty()
+  @IsDateString()
+  birthday: Date;
 
-    @IsNotEmpty()
-    role:number;
+  @IsNotEmpty()
+  role: number;
 
-    @IsNotEmpty()
-    first_date:Date;
+  @IsNotEmpty()
+  first_date: Date;
 
-    avatar?:string;
+  avatar?: string;
 
-    @IsNotEmpty()
-    salary:number;
+  @IsNotEmpty()
+  salary: number;
 }

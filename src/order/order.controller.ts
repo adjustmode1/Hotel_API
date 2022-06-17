@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -11,15 +23,15 @@ export class OrderController {
 
   @Post('create')
   @UseGuards(AuthGuard)
-  @Roles('admin','user')
-  @UsePipes(new ValidationPipe({transform:true}))
+  @Roles('admin', 'user')
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
 
   @Get('list')
   @UseGuards(AuthGuard)
-  @Roles('user','admin')
+  @Roles('user', 'admin')
   findAll() {
     return this.orderService.findAll();
   }

@@ -1,26 +1,25 @@
 import { IsNotEmpty, IsDateString, IsNumber } from 'class-validator';
 export class CreateOrderDto {
-    @IsNotEmpty()
-    idUser:string;
+  @IsNotEmpty()
+  idUser: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    totalPerson:string;
+  @IsNotEmpty()
+  @IsNumber()
+  totalPerson: string;
 
-    @IsNotEmpty()
-    @IsDateString()
-    startDate:Date;
+  @IsNotEmpty()
+  @IsDateString()
+  startDate: Date;
 
-    @IsNotEmpty()
-    @IsDateString()
+  @IsNotEmpty()
+  @IsDateString()
+  endDate: Date;
 
-    endDate:Date;
+  @IsNotEmpty()
+  status: number;
 
-    @IsNotEmpty()
-    status:number;
+  services?: string[];
 
-    services?:string[]
-
-    @IsNotEmpty()
-    rooms:string[]
+  @IsNotEmpty()
+  rooms: string[];
 }

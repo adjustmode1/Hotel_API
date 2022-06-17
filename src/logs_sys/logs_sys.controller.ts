@@ -1,4 +1,4 @@
-import { Controller, Get,Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { LogsSysService } from './logs_sys.service';
 
 @Controller('logsSys')
@@ -14,5 +14,4 @@ export class LogsSysController {
   findOne(@Param('id') id: string) {
     return this.logsSysService.findOne(id);
   }
-
 }

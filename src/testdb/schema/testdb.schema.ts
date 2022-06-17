@@ -1,18 +1,18 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export type TestDBDocument = TestDB & Document;
 
-@Schema({versionKey:false})
-export class TestDB{
-    @Prop({
-        type:String,
-        required:true
-    })
-    name:string;
+@Schema({ versionKey: false })
+export class TestDB {
+  @Prop({
+    type: String,
+    required: true,
+  })
+  name: string;
 }
 
-const TestDBSchema = SchemaFactory.createForClass(TestDB)
+const TestDBSchema = SchemaFactory.createForClass(TestDB);
 
 // TestDBSchema
 // .post('save', async (content)=>{
@@ -22,9 +22,9 @@ const TestDBSchema = SchemaFactory.createForClass(TestDB)
 //     console.log('pre hook');
 //     next()
 // })
-TestDBSchema.pre('save',(next)=>{
-    console.log('pre');
-    next();
-})
+TestDBSchema.pre('save', (next) => {
+  console.log('pre');
+  next();
+});
 
-export default  TestDBSchema;
+export default TestDBSchema;

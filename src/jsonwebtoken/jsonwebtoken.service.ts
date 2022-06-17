@@ -3,13 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class JsonwebtokenService {
-    constructor(private jsonwebtokenService:JwtService){}
-    
-    sign(str:object){
-        return this.jsonwebtokenService.sign({info:str})
-    }
+  constructor(private jsonwebtokenService: JwtService) {}
 
-    check(str){
-        return this.jsonwebtokenService.verify(str)
-    }
+  sign(str: object) {
+    return this.jsonwebtokenService.sign({ info: str });
+  }
+
+  check(str) {
+    return this.jsonwebtokenService.verify(str);
+  }
 }

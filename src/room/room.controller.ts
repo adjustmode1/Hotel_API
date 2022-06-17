@@ -1,6 +1,21 @@
 import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, UsePipes, ValidationPipe, HttpException, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+  UsePipes,
+  ValidationPipe,
+  HttpException,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
@@ -16,50 +31,59 @@ export class RoomController {
   @Post('create')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  @UseInterceptors(FilesInterceptor('images',10,{
-    storage:diskStorage({
-      destination:'src/save_upload',
-      filename:(req,file,cb)=>{
-        cb(null,Date.now()+file.originalname);
-      }
-    })
-  }))
-  @UsePipes(new ValidationPipe({transform:true}))
-  async create(@Request() req, @Body() createRoomDto: CreateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
-    const id = new mongoose.Types.ObjectId()
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: diskStorage({
+        destination: 'src/save_upload',
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + file.originalname);
+        },
+      }),
+    }),
+  )
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(
+    @Request() req,
+    @Body() createRoomDto: CreateRoomDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    const id = new mongoose.Types.ObjectId();
     createRoomDto._id = id;
-    const images:string[] = []
-    const folder:string = 'src/storage/'+createRoomDto._id+'/';
-    console.log('files',files)
-    if(files.length>0){
-      files.forEach(file => {
-        const path:string = folder+file.filename; 
+    const images: string[] = [];
+    const folder: string = 'src/storage/' + createRoomDto._id + '/';
+    console.log('files', files);
+    if (files.length > 0) {
+      files.forEach((file) => {
+        const path: string = folder + file.filename;
         images.push(path);
       });
     }
     createRoomDto.image = images;
-    const result = await this.roomService.create(req.info.info._id,createRoomDto);
-    if(result.status===200){
-      if(!fs.existsSync(folder)){
-        fs.mkdirSync(folder)
+    const result = await this.roomService.create(
+      req.info.info._id,
+      createRoomDto,
+    );
+    if (result.status === 200) {
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder);
       }
 
-      files.forEach(file=>{
-        const path:string = "src/save_upload/"+file.filename; 
+      files.forEach((file) => {
+        const path: string = 'src/save_upload/' + file.filename;
         const newpath = folder + file.filename;
-        fs.renameSync(path,newpath)
-      })
+        fs.renameSync(path, newpath);
+      });
       return result.data;
-    }else{
-      files.forEach(file=>{
-        const path:string = "src/save_upload/"+file.filename; 
+    } else {
+      files.forEach((file) => {
+        const path: string = 'src/save_upload/' + file.filename;
         fs.rmSync(path);
-      })
-      throw new HttpException(result.data.result,400);
+      });
+      throw new HttpException(result.data.result, 400);
     }
   }
 
-  @Get('list')  
+  @Get('list')
   findAll() {
     return this.roomService.findAll();
   }
@@ -73,51 +97,65 @@ export class RoomController {
   @Patch('update')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  @UseInterceptors(FilesInterceptor("images",10,{
-    storage:diskStorage({
-      destination:'src/save_upload',
-      filename:(req,file,cb)=>{
-        cb(null,Date.now()+file.originalname);
-      }
-    })
-  }))
-  @UsePipes(new ValidationPipe({transform:true}))
-  async update(@Request() req, @Body() updateRoomDto: UpdateRoomDto,@UploadedFiles() files:Array<Express.Multer.File>) {
+  @UseInterceptors(
+    FilesInterceptor('images', 10, {
+      storage: diskStorage({
+        destination: 'src/save_upload',
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + file.originalname);
+        },
+      }),
+    }),
+  )
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(
+    @Request() req,
+    @Body() updateRoomDto: UpdateRoomDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
     const room = await this.roomService.findOne(updateRoomDto._id.toString());
-    if(room.status===200&&room.data.length>0){
-      let images:string[] = [];
-      files.forEach(file=>{
-        const path = "src/storage/"+updateRoomDto._id+"/"
-        images.push(path+file.filename);
-      })
-      console.log("room data",room.data)
-      images = files.length>0? images:room.data.image;
+    if (room.status === 200 && room.data.length > 0) {
+      let images: string[] = [];
+      files.forEach((file) => {
+        const path = 'src/storage/' + updateRoomDto._id + '/';
+        images.push(path + file.filename);
+      });
+      console.log('room data', room.data);
+      images = files.length > 0 ? images : room.data.image;
       updateRoomDto.image = images;
-      console.log('image_up',images);
-      const result = await this.roomService.update(req.info.info._id,updateRoomDto)
-      if(result.status === 200){// cập nhật thanh công
-        if(files.length>0){
-          room.data[0].image.forEach(path => { // xóa ảnh cũ
+      console.log('image_up', images);
+      const result = await this.roomService.update(
+        req.info.info._id,
+        updateRoomDto,
+      );
+      if (result.status === 200) {
+        // cập nhật thanh công
+        if (files.length > 0) {
+          room.data[0].image.forEach((path) => {
+            // xóa ảnh cũ
             fs.rmSync(path);
-          }); 
+          });
         }
-        files.forEach(file=>{//chuyển file qua thư mục room
-          const oldFolder = "src/save_upload/";
-          const newFolder = "src/storage/"+room.data[0]._id+"/"
-          fs.renameSync(oldFolder+file.filename,newFolder+file.filename);
-        })
-      }else{//cập nhật không thành công
-        files.forEach(file=>{//xóa file đã upload
-          const path = "src/save_upload/";
-          fs.rmSync(path+file.filename);
-        })
+        files.forEach((file) => {
+          //chuyển file qua thư mục room
+          const oldFolder = 'src/save_upload/';
+          const newFolder = 'src/storage/' + room.data[0]._id + '/';
+          fs.renameSync(oldFolder + file.filename, newFolder + file.filename);
+        });
+      } else {
+        //cập nhật không thành công
+        files.forEach((file) => {
+          //xóa file đã upload
+          const path = 'src/save_upload/';
+          fs.rmSync(path + file.filename);
+        });
       }
-      return result
+      return result;
     }
     return {
-      status:400,
-      data:"not found"
-    }
+      status: 400,
+      data: 'not found',
+    };
   }
 
   @Delete(':id')
@@ -125,13 +163,13 @@ export class RoomController {
   @Roles('admin')
   async remove(@Request() req, @Param('id') id: string) {
     const room = await this.roomService.findOne(id);
-    const result = await this.roomService.remove(req.info.info._id,id);
-    if(room.status===200&&result.status===200){
-        if(room.data.length>0){
-          const folder = "src/storage/"+room.data[0]._id;
-          fs.rmSync(folder, { recursive: true, force: true });
-        }
+    const result = await this.roomService.remove(req.info.info._id, id);
+    if (room.status === 200 && result.status === 200) {
+      if (room.data.length > 0) {
+        const folder = 'src/storage/' + room.data[0]._id;
+        fs.rmSync(folder, { recursive: true, force: true });
+      }
     }
-    return result
+    return result;
   }
 }

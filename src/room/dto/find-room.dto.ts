@@ -1,7 +1,3 @@
-
-export class FindRoomDTO{
-    
-    _id?:string;
-
-    
+export class FindRoomDTO {
+  _id?: string;
 }

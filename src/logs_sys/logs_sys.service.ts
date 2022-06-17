@@ -5,14 +5,16 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class LogsSysService {
-  constructor(@InjectModel(LogsSys.name) private logsSysModel:Model<LogsSysDocument>){}
+  constructor(
+    @InjectModel(LogsSys.name) private logsSysModel: Model<LogsSysDocument>,
+  ) {}
 
   findAll() {
     return this.logsSysModel.find();
   }
 
   findOne(id: string) {
-    return this.logsSysModel.find({_id:id});
+    return this.logsSysModel.find({ _id: id });
   }
 
   remove(id: string) {

@@ -1,33 +1,33 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document} from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export type LogsSysDocument = LogsSys & Document;
 
 @Schema()
-export class LogsSys{
-    @Prop()
-    id_staff:string;
+export class LogsSys {
+  @Prop()
+  id_staff: string;
 
-    @Prop()
-    action:string;
+  @Prop()
+  action: string;
 
-    @Prop({
-        type:Date,
-        default:()=>{
-            return Date.now();
-        }
-    })
-    date:Date;
+  @Prop({
+    type: Date,
+    default: () => {
+      return Date.now();
+    },
+  })
+  date: Date;
 
-    @Prop({
-        type:String
-    })
-    document:string
+  @Prop({
+    type: String,
+  })
+  document: string;
 
-    @Prop({
-        type:Object
-    })
-    data:object
+  @Prop({
+    type: Object,
+  })
+  data: object;
 }
 
-export const LogsSysSchema = SchemaFactory.createForClass(LogsSys)
+export const LogsSysSchema = SchemaFactory.createForClass(LogsSys);

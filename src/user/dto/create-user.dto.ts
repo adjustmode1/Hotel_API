@@ -1,28 +1,36 @@
-import { IsNotEmpty, MinLength, IsAlphanumeric, IsEmail, IsNumberString, IsDateString, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  MinLength,
+  IsAlphanumeric,
+  IsEmail,
+  IsNumberString,
+  IsDateString,
+  IsString,
+} from 'class-validator';
 export class CreateUserDto {
-    @IsNotEmpty()
-    @IsEmail()
-    gmail:string;
+  @IsNotEmpty()
+  @IsEmail()
+  gmail: string;
 
-    @IsNotEmpty()
-    @IsString()
-    name:string;
+  @IsNotEmpty()
+  @IsString()
+  name: string;
 
-    @IsNotEmpty()
-    gender:boolean;
-    
-    @IsNotEmpty()
-    @IsDateString()
-    birthday:Date;
+  @IsNotEmpty()
+  gender: boolean;
 
-    @IsNotEmpty()
-    @MinLength(8)
-    password:string;
+  @IsNotEmpty()
+  @IsDateString()
+  birthday: Date;
 
-    @IsAlphanumeric()
-    @IsNumberString()
-    @MinLength(8)
-    phone:string;
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
 
-    avatar?:string;
+  @IsAlphanumeric()
+  @IsNumberString()
+  @MinLength(8)
+  phone: string;
+
+  avatar?: string;
 }

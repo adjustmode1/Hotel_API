@@ -18,7 +18,22 @@ import { TestdbModule } from './testdb/testdb.module';
 import { TestappModule } from './testapp/testapp.module';
 
 @Module({
-  imports: [DatabaseModule, StaffModule, UserModule, TypeRoomModule, RoomModule, ServicesModule, LogsSysModule, HashModule, OrderModule, JsonwebtokenModule, LoginModule, AuthModule, TestdbModule, TestappModule],
+  imports: [
+    DatabaseModule,
+    StaffModule,
+    UserModule,
+    TypeRoomModule,
+    RoomModule,
+    ServicesModule,
+    LogsSysModule,
+    HashModule,
+    OrderModule,
+    JsonwebtokenModule,
+    LoginModule,
+    AuthModule,
+    TestdbModule,
+    TestappModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -28,10 +43,10 @@ export class AppModule {
       .apply(AuthMiddleware)
       .exclude(
         // {path:'order/(.*)',method:RequestMethod.GET},
-        {path:'room/(.*)',method:RequestMethod.GET},
-        {path:'typeRoom/(.*)',method:RequestMethod.GET},
-        {path:'services/(.*)',method:RequestMethod.GET},
+        { path: 'room/(.*)', method: RequestMethod.GET },
+        { path: 'typeRoom/(.*)', method: RequestMethod.GET },
+        { path: 'services/(.*)', method: RequestMethod.GET },
       )
-      .forRoutes('services','staff','order','room','typeRoom')
+      .forRoutes('services', 'staff', 'order', 'room', 'typeRoom');
   }
 }

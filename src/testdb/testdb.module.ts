@@ -5,8 +5,10 @@ import { TestdbService } from './testdb.service';
 import { TestdbController } from './testdb.controller';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:TestDB.name,schema:TestDBSchema}])],
+  imports: [
+    MongooseModule.forFeature([{ name: TestDB.name, schema: TestDBSchema }]),
+  ],
   controllers: [TestdbController],
-  providers: [TestdbService]
+  providers: [TestdbService],
 })
 export class TestdbModule {}

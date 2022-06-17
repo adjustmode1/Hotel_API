@@ -7,8 +7,8 @@ import { LoginController } from './login.controller';
 import { HashModule } from 'src/hash/hash.module';
 
 @Module({
-  imports:[UserModule,StaffModule,HashModule,JsonwebtokenModule],
+  imports: [UserModule, StaffModule, HashModule, JsonwebtokenModule],
   controllers: [LoginController],
-  providers: [LoginService]
+  providers: [LoginService],
 })
 export class LoginModule {}
