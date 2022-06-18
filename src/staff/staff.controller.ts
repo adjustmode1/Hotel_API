@@ -21,8 +21,8 @@ import { StaffService } from './staff.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { Roles } from 'src/roles.decorator';
+import { AuthGuard } from '../auth/auth.guard';
+import { Roles } from '../roles.decorator';
 
 @Controller('staff')
 export class StaffController {

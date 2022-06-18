@@ -1,9 +1,9 @@
 import { Document, SchemaTypes } from 'mongoose';
 import { SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Schema } from '@nestjs/mongoose';
-import { User } from 'src/user/schema/user.schema';
-import { Room } from 'src/room/schema/room.schema.ts';
-import { Services } from 'src/services/schema/services.schema';
+import { User } from '../../user/schema/user.schema';
+import { Room } from '../../room/schema/room.schema.ts';
+import { Services } from '../../services/schema/services.schema';
 
 export type OrderDocument = Order & Document;
 

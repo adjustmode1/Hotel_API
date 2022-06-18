@@ -12,8 +12,8 @@ import {
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { Roles } from 'src/roles.decorator';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from '../roles.decorator';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('services')
 export class ServicesController {

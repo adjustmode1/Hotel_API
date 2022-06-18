@@ -8,8 +8,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { HashService } from 'src/hash/hash.service';
-import { StaffService } from 'src/staff/staff.service';
+import { HashService } from '../hash/hash.service';
+import { StaffService } from '../staff/staff.service';
 import { AdminLoginDto } from './dto/admin.login.dto';
 
 @Controller('login')

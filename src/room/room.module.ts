@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { Room, RoomSchema } from './schema/room.schema.ts';
-import { LogsSys, LogsSysSchema } from 'src/logs_sys/schema/logs_sys.schema';
+import { LogsSys, LogsSysSchema } from '../logs_sys/schema/logs_sys.schema';
 
 @Module({
   imports: [

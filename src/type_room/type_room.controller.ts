@@ -14,8 +14,8 @@ import {
 import { TypeRoomService } from './type_room.service';
 import { CreateTypeRoomDto } from './dto/create-type_room.dto';
 import { UpdateTypeRoomDto } from './dto/update-type_room.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { Roles } from 'src/roles.decorator';
+import { AuthGuard } from '../auth/auth.guard';
+import { Roles } from '../roles.decorator';
 
 @Controller('typeRoom')
 export class TypeRoomController {

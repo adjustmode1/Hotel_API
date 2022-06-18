@@ -4,7 +4,7 @@ import { UserModule } from './../user/user.module';
 import { Module } from '@nestjs/common';
 import { LoginService } from './login.service';
 import { LoginController } from './login.controller';
-import { HashModule } from 'src/hash/hash.module';
+import { HashModule } from '../hash/hash.module';
 
 @Module({
   imports: [UserModule, StaffModule, HashModule, JsonwebtokenModule],

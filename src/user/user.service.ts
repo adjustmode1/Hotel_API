@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schema/user.schema';
 import { Model } from 'mongoose';
-import { LogsSys, LogsSysDocument } from 'src/logs_sys/schema/logs_sys.schema';
+import { LogsSys, LogsSysDocument } from '../logs_sys/schema/logs_sys.schema';
 
 @Injectable()
 export class UserService {
