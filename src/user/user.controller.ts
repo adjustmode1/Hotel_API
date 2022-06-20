@@ -39,13 +39,11 @@ export class UserController {
       }),
     }),
   )
-  // @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ transform: true }))
   async create(
     @Body() createUserDto: CreateUserDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(createUserDto.gmail);
-    return "";
     const hash = new HashService();
     const pass_hash = await hash.hash(createUserDto.password);
     createUserDto.password = pass_hash;
@@ -117,8 +115,8 @@ export class UserController {
     const user = await this.userService.findOne(id);
     if (user) {
       return this.userService.remove(req.info.info._id, id).then((res) => {
-        console.log(res);
-        fs.rmSync(user[0].avatar.toString());
+        if(fs.existsSync(user.avatar.toString()))
+          fs.rmSync(user.avatar.toString());
         return {
           status: 200,
           data: 'ok',

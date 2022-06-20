@@ -14,7 +14,6 @@ export class UserService {
   ) {}
 
   create(createUserDto: CreateUserDto) {
-    console.log('dâta', createUserDto);
     return this.userModel
       .insertMany({
         gmail: createUserDto.gmail,
