@@ -39,12 +39,13 @@ export class UserController {
       }),
     }),
   )
-  @UsePipes(new ValidationPipe({ transform: true }))
+  // @UsePipes(new ValidationPipe({ transform: true }))
   async create(
     @Body() createUserDto: CreateUserDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log(createUserDto);
+    console.log(createUserDto.gmail);
+    return "";
     const hash = new HashService();
     const pass_hash = await hash.hash(createUserDto.password);
     createUserDto.password = pass_hash;

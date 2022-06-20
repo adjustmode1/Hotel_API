@@ -7,13 +7,11 @@ import { HashService } from './hash.service';
 describe('HashService', () => {
   let app:INestApplication;
   let service: HashService;
-
+  
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports:[HashModule],
     })
-    .overrideProvider(HashService)
-    .useValue(service)
     .compile();
 
     app = module.createNestApplication()
@@ -30,12 +28,12 @@ describe('HashService', () => {
     expect(service).toBeDefined();
   });
 
-  it('compare password true', async ()=>{
+  it('compare stirng true', async ()=>{
       const result = await service.compare('adminadmin','$2b$10$kqzab5TJh.ZwKH/TQBtw6ezPpYjO4ZhcZcWV7pOmKw85vDeX8zJ9q');
       expect(result).toEqual(true)
   })
 
-  it('compare password false', async ()=>{
+  it('compare string false', async ()=>{
       const result = await service.compare('wrong password','$2b$10$kqzab5TJh.ZwKH/TQBtw6ezPpYjO4ZhcZcWV7pOmKw85vDeX8zJ9q');
       expect(result).toEqual(false)
   })

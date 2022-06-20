@@ -25,7 +25,7 @@ export class LoginController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async loginUser(@Body() info: LoginDto) {
     const result = await this.userService.loginUser(info.gmail);
-    if (result.status === 200) {
+    if (result.status === 200 && result.data !== null) {
       const hashing = await this.hash.compare(
         info.password,
         result.data.password,

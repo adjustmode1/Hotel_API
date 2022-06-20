@@ -18,10 +18,8 @@ export class HashService {
   }
 
   compare(password, hash) {
-    console.log(password + '/' + hash);
     return new Promise((resolve) => {
       bscrypt.compare(password, hash, (err, result) => {
-        console.log(err);
         if (err) throw new HttpException('server Error', 500);
         resolve(result);
       });

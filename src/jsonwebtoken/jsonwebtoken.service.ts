@@ -10,6 +10,17 @@ export class JsonwebtokenService {
   }
 
   check(str) {
-    return this.jsonwebtokenService.verify(str);
+    try {
+      const result = this.jsonwebtokenService.verify(str);
+      return {
+        status:200,
+        data:result
+      }
+    } catch (error) {
+      return {
+        status:400,
+        data:error
+      }
+    }
   }
 }
