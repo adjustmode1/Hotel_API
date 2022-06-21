@@ -116,6 +116,7 @@ export class UserController {
     const user = await this.userService.findOne(id);
     if (user) {
       return this.userService.remove(req.info.info._id, id).then((res) => {
+        console.log(res)
         if (fs.existsSync(user.avatar.toString()))
           fs.rmSync(user.avatar.toString());
         return {
