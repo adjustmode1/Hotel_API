@@ -51,7 +51,6 @@ export class RoomController {
     createRoomDto._id = id;
     const images: string[] = [];
     const folder: string = 'src/storage/' + createRoomDto._id + '/';
-    console.log('files', files);
     if (files.length > 0) {
       files.forEach((file) => {
         const path: string = folder + file.filename;
@@ -120,10 +119,8 @@ export class RoomController {
         const path = 'src/storage/' + updateRoomDto._id + '/';
         images.push(path + file.filename);
       });
-      console.log('room data', room.data);
       images = files.length > 0 ? images : room.data.image;
       updateRoomDto.image = images;
-      console.log('image_up', images);
       const result = await this.roomService.update(
         req.info.info._id,
         updateRoomDto,

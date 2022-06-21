@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -22,6 +24,7 @@ export class ServicesController {
   @Post('create')
   @UseGuards(AuthGuard)
   @Roles('admin')
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Request() req, @Body() createServiceDto: CreateServiceDto) {
     return this.servicesService.create(req.info.info._id, createServiceDto);
   }
@@ -39,6 +42,7 @@ export class ServicesController {
   @Patch('update')
   @UseGuards(AuthGuard)
   @Roles('admin')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Request() req, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(req.info.info._id, updateServiceDto);
   }

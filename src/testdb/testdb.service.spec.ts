@@ -9,9 +9,14 @@ describe('TestdbService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       // imports:[DatabaseModule],
-      imports:[
-        MongooseModule.forRoot('mongodb+srv://thanhhuy:thanhhuy@cluster0.a0gzx.mongodb.net/?retryWrites=true&w=majority'),
-        MongooseModule.forFeature([{name:TestDB.name,schema:TestDBSchema}])],
+      imports: [
+        MongooseModule.forRoot(
+          'mongodb+srv://thanhhuy:thanhhuy@cluster0.a0gzx.mongodb.net/?retryWrites=true&w=majority',
+        ),
+        MongooseModule.forFeature([
+          { name: TestDB.name, schema: TestDBSchema },
+        ]),
+      ],
       providers: [TestdbService],
     }).compile();
 

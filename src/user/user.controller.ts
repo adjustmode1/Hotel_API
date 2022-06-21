@@ -89,6 +89,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log(file);
     const user = await this.userService.findOne(updateUserDto._id);
     if (file) {
       updateUserDto.avatar = 'src/avatar/' + file.filename;
@@ -115,7 +116,7 @@ export class UserController {
     const user = await this.userService.findOne(id);
     if (user) {
       return this.userService.remove(req.info.info._id, id).then((res) => {
-        if(fs.existsSync(user.avatar.toString()))
+        if (fs.existsSync(user.avatar.toString()))
           fs.rmSync(user.avatar.toString());
         return {
           status: 200,

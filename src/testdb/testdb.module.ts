@@ -10,6 +10,6 @@ import { TestdbController } from './testdb.controller';
   ],
   controllers: [TestdbController],
   providers: [TestdbService],
-  exports:[TestdbService]
+  exports: [TestdbService],
 })
 export class TestdbModule {}

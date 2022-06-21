@@ -1,10 +1,10 @@
 import { LogsSys, LogsSysDocument } from './../logs_sys/schema/logs_sys.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { Room, RoomDocument } from './schema/room.schema.ts';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class RoomService {
@@ -13,7 +13,6 @@ export class RoomService {
     @InjectModel(LogsSys.name) private logSysModel: Model<LogsSysDocument>,
   ) {}
   create(person, createRoomDto: CreateRoomDto) {
-    console.log('service', createRoomDto);
     return this.roomModel
       .insertMany({
         _id: createRoomDto._id,

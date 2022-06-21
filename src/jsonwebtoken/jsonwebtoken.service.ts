@@ -13,14 +13,14 @@ export class JsonwebtokenService {
     try {
       const result = this.jsonwebtokenService.verify(str);
       return {
-        status:200,
-        data:result
-      }
+        status: 200,
+        data: result,
+      };
     } catch (error) {
       return {
-        status:400,
-        data:error
-      }
+        status: 400,
+        data: error,
+      };
     }
   }
 }

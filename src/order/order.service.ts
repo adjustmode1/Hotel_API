@@ -23,7 +23,6 @@ export class OrderService {
         rooms: createOrderDto.rooms,
       })
       .then((res) => {
-        console.log(res);
         return {
           status: 200,
           data: res,

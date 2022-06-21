@@ -31,8 +31,15 @@ export class StaffController {
   @Get('list')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  async test() {
+  async findAll() {
     return this.staffService.findAll();
+  }
+
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  @Roles('admin')
+  async findOne(@Param('id') id) {
+    return this.staffService.findOne(id);
   }
 
   @Post('create')
@@ -82,7 +89,6 @@ export class StaffController {
   @Roles('admin')
   async remove(@Request() req, @Param('id') id: string) {
     const staff = await this.staffService.findOne(id);
-    console.log('delet', staff);
     if (staff) {
       const result = await this.staffService.removeOne(req.info.info._id, id);
       if (result.deletedCount === 1) {
