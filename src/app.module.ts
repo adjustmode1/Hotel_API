@@ -49,6 +49,6 @@ export class AppModule {
         { path: 'user/(.*)', method: RequestMethod.GET },
         { path: 'user/(.*)', method: RequestMethod.POST },
       )
-      .forRoutes('services', 'staff', 'order', 'room', 'typeRoom', 'user');
+      .forRoutes('services', 'staff', 'order', 'room', 'typeRoom', 'user','logsSys');
   }
 }

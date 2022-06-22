@@ -34,15 +34,31 @@ describe('ServicesController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('find all services', () => {
-    return request(app.getHttpServer()).get('/services/list').expect(200);
-  });
-
-  it('find one services', () => {
-    return request(app.getHttpServer())
-      .get('/services/629ef3c351ecaa94d9c5bf65')
-      .expect(200);
-  });
+  describe('find',()=>{
+    it('find all services', async () => {
+      const result = await request(app.getHttpServer())
+                      .get('/services/list')
+                      .expect(200);
+      const arr = JSON.parse(result.text)
+      expect(arr.length).toBeGreaterThan(0)
+    });
+  
+    it('find one services', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/services/629ef3c351ecaa94d9c5bf65')
+        .expect(200);
+        const arr = JSON.parse(result.text)
+        expect(arr.length).toBe(1)
+    });
+  
+    it('find one services not have', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/services/629ef3c351ecaa94d9c32f65')
+        .expect(200);
+        const arr = JSON.parse(result.text)
+        expect(arr.length).toBe(0)
+    });
+  })
 
   describe('create serice', () => {
     it('create new service', () => {
@@ -97,25 +113,55 @@ describe('ServicesController', () => {
     });
   });
 
-  it('update service', () => {
-    return request(app.getHttpServer())
-      .patch('/services/update')
-      .auth(token, {
-        type: 'bearer',
-      })
-      .send({
-        _id: id,
-        name: 'new name service temp ',
-      })
-      .expect(200);
-  });
+  describe('update',()=>{
+    it('update service', () => {
+      return request(app.getHttpServer())
+        .patch('/services/update')
+        .auth(token, {
+          type: 'bearer',
+        })
+        .send({
+          _id: id,
+          name: 'new name service temp ',
+        })
+        .expect(200);
+    });
+  
+    it('update service not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .patch('/services/update')
+        .send({
+          _id: id,
+          name: 'new name service temp ',
+        })
+        expect(result.text).toBe('unauthorization')
+    });
+  })
 
-  it('delete service', () => {
-    return request(app.getHttpServer())
-      .delete(`/services/${id}`)
-      .auth(token, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+  describe('delete',()=>{
+    it('delete service', () => {
+      return request(app.getHttpServer())
+        .delete(`/services/${id}`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+    });
+  
+    it('delete service not found', () => {
+      return request(app.getHttpServer())
+        .delete(`/services/2a956f2a3c48bdd5c091bc44`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+    });
+  
+    it('delete service not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .delete(`/services/${id}`)
+        .expect(400);
+        expect(result.text).toBe('unauthorization')
+    });
+  })
 });

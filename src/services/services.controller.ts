@@ -44,6 +44,7 @@ export class ServicesController {
   @Roles('admin')
   @UsePipes(new ValidationPipe({ transform: true }))
   update(@Request() req, @Body() updateServiceDto: UpdateServiceDto) {
+    console.log('update',updateServiceDto)
     return this.servicesService.update(req.info.info._id, updateServiceDto);
   }
 

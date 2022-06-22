@@ -45,7 +45,7 @@ describe('TypeRoomController', () => {
       .expect(200);
   });
 
-  describe('create type room', () => {
+  describe('create', () => {
     it('create new type room', () => {
       return request(app.getHttpServer())
         .post('/typeRoom/create')
@@ -61,6 +61,18 @@ describe('TypeRoomController', () => {
           const result = JSON.parse(res.text);
           id = result.data._id;
         });
+    });
+
+    it('create new type room not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/typeRoom/create')
+        .send({
+          name: 'test temp type',
+          price: 123123,
+        })
+        .expect(400)
+
+        expect(result.text).toBe('unauthorization')
     });
 
     it('create new type room not price', () => {
@@ -97,26 +109,63 @@ describe('TypeRoomController', () => {
     });
   });
 
-  it('update type room', () => {
-    return request(app.getHttpServer())
-      .patch('/typeRoom/update')
-      .auth(token, {
-        type: 'bearer',
-      })
-      .send({
-        id,
-        name: 'new name temp type',
-        price: 131313,
-      })
-      .expect(200);
-  });
+  describe('update',()=>{
+    it('update type room', () => {
+      return request(app.getHttpServer())
+        .patch('/typeRoom/update')
+        .auth(token, {
+          type: 'bearer',
+        })
+        .send({
+          id,
+          name: 'new name temp type',
+          price: 131313,
+        })
+        .expect(200);
+    });
 
-  it('delete type room', () => {
-    return request(app.getHttpServer())
-      .delete(`/typeRoom/${id}`)
-      .auth(token, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+    it('update type room with loss param', async () => {
+      const result = await request(app.getHttpServer())
+        .patch('/typeRoom/update')
+        .auth(token, {
+          type: 'bearer',
+        })
+        .send({
+          price: 131313,
+        })
+        .expect(400);
+    });
+
+    it('update type room not have token',async () => {
+      const result = await request(app.getHttpServer())
+        .patch('/typeRoom/update')
+        .send({
+          id,
+          name: 'new name temp type',
+          price: 131313,
+        })
+        .expect(400);
+            
+      expect(result.text).toBe('unauthorization')
+    });
+  })
+
+  describe('delete',()=>{
+    it('delete type room', () => {
+      return request(app.getHttpServer())
+        .delete(`/typeRoom/${id}`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+    });
+
+    it('delete type room not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .delete(`/typeRoom/${id}`)
+        .expect(400);
+
+      expect(result.text).toBe('unauthorization')
+    });
+  })
 });

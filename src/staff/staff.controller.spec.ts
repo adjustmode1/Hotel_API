@@ -51,55 +51,144 @@ describe('StaffController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('find all staff', () => {
-    return request(app.getHttpServer())
-      .get('/staff/list')
-      .auth(token, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+  describe('find',()=>{
+    it('find all staff', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/staff/list')
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+        const res = JSON.parse(result.text)
+        expect(res.length).toBeGreaterThan(0)
+    });
 
-  it('find one staff', () => {
-    return request(app.getHttpServer())
-      .get('/staff/62a95212bcdff37025a39f5e')
-      .auth(token, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+    it('find all staff not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/staff/list')
+        .expect(400);
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('find one staff', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/staff/62a95212bcdff37025a39f5e')
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+        const res = JSON.parse(result.text)
+        expect(res.length).toBe(1)
+    });
 
-  it('create new staff', () => {
-    return request(app.getHttpServer())
-      .post('/staff/create')
-      .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
-      .auth(token, {
-        type: 'bearer',
-      })
-      .send(data.getBuffer().toString())
-      .then((res) => {
-        const result = JSON.parse(res.text);
-        id = result[0]._id;
-      });
-  });
+    it('find one staff not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/staff/62a95212bcdff37025a39f5e')
+        .expect(400);
+        expect(result.text).toBe('unauthorization')
+    });
 
-  it('update staff', () => {
-    data.append('_id', id);
-    return request(app.getHttpServer())
-      .put('/staff/update')
-      .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
-      .auth(token, {
-        type: 'bearer',
-      })
-      .send(data.getBuffer().toString());
-  });
+    it('find one staff not found', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/staff/62a95212bcdff37025a3325e')
+        .expect(200);
+        const res = JSON.parse(result.text)
+        expect(res.length).toBe(0)
+    });
+  })
+  describe('create',()=>{
+    it('create new staff', () => {
+      return request(app.getHttpServer())
+        .post('/staff/create')
+        .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .send(data.getBuffer().toString())
+        .then((res) => {
+          const result = JSON.parse(res.text);
+          id = result[0]._id;
+        });
+    });
 
-  it('delete staff', () => {
-    return request(app.getHttpServer())
-      .delete(`/staff/delete/${id}`)
-      .auth(token, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+    it('create new staff not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/staff/create')
+        .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
+        .send(data.getBuffer().toString())
+        
+        expect(result.text).toBe('unauthorization')
+    });
+
+    it('create new staff loss param', async () => {
+      const form = new FormData()
+      form.append('loss','123')
+      const result = await request(app.getHttpServer())
+        .post('/staff/create')
+        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .send(data.getBuffer().toString())
+        .expect(400)
+        console.log(result.text)
+        // expect(result.text).toBe('unauthorization')
+    });
+  })
+  describe('update',()=>{
+    it('update staff', () => {
+      data.append('_id', id);
+      return request(app.getHttpServer())
+        .put('/staff/update')
+        .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .send(data.getBuffer().toString());
+    });
+
+    it('update staff loss param', async () => {
+      const form = new FormData()
+      form.append('loss','123')
+      const result = await request(app.getHttpServer())
+        .post('/staff/create')
+        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .send(data.getBuffer().toString())
+        .expect(400)
+        console.log(result.text)
+        // expect(result.text).toBe('unauthorization')
+    });
+
+    it('update staff not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .put('/staff/update')
+        .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
+        .send(data.getBuffer().toString());
+
+        expect(result.text).toBe('unauthorization')
+    });
+  })
+  describe('delete',()=>{
+    it('delete staff', () => {
+      return request(app.getHttpServer())
+        .delete(`/staff/delete/${id}`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+    });
+
+    it('delete staff not found', () => {
+      return request(app.getHttpServer())
+        .delete(`/staff/delete/2a956f2a3c48bdd5c091bc44`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(200);
+    });
+
+    it('delete staff not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .delete(`/staff/delete/${id}`)
+        .expect(400);
+        expect(result.text).toBe('unauthorization')
+    });
+  })
 });

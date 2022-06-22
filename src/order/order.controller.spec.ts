@@ -36,70 +36,188 @@ describe('OrderController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('find all order', () => {
-    return request(app.getHttpServer())
-      .get('/order/list')
-      .auth(token_user, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+  describe('find',()=>{
+    it('find all order', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/order/list')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .expect(200);
+        const arr = JSON.parse(result.text);
+        expect(arr.length).toBeGreaterThan(0)
+    });
+  
+    it('find all order not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/order/list')
+        .expect(400)
+      
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('find one order', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/order/62a18d1ddf0effb1b90193d0')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .expect(200);
+        const arr = JSON.parse(result.text);
+        expect(arr.length).toBe(1)
+    });
+  
+    it('find one order not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/order/62a18d1ddf0effb1b90193d0')
+        .expect(400);
+        
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('find one order not found', async () => {
+      const result = await request(app.getHttpServer())
+        .get('/order/62a18d1ddf0effb1b90123d0')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .expect(200);
+  
+        const arr = JSON.parse(result.text);
+        expect(arr.length).toBe(0)
+    });
+  })
 
-  it('find one order', () => {
-    return request(app.getHttpServer())
-      .get('/order/62a18d1ddf0effb1b90193d0')
-      .auth(token_user, {
-        type: 'bearer',
-      })
-      .expect(200);
-  });
+  describe('create',()=>{
+    it('create order', () => {
+      return request(app.getHttpServer())
+        .post('/order/create')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .send({
+          idUser: '62a955f4763250074914bd01',
+          totalPerson: 10,
+          startDate: '2022-02-22',
+          endDate: '2022-02-26',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        .then((res) => {
+          const result = JSON.parse(res.text);
+          id = result.data[0]._id;
+        });
+    });
+  
+    it('create order not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/order/create')
+        .send({
+          idUser: '62a955f4763250074914bd01',
+          totalPerson: 10,
+          startDate: '2022-02-22',
+          endDate: '2022-02-26',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('create order with loss params', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/order/create')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .send({
+          idUser: '62a955f4763250074914bd01',
+          startDate: '2022-02-22',
+          endDate: '2022-02-26',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        const res = JSON.parse(result.text);
+        expect(res.error).toBe('Bad Request')
+    });
+  })
 
-  it('create order', () => {
-    return request(app.getHttpServer())
-      .post('/order/create')
-      .auth(token_user, {
-        type: 'bearer',
-      })
-      .send({
-        idUser: '62a955f4763250074914bd01',
-        totalPerson: 10,
-        startDate: '2022-02-22',
-        endDate: '2022-02-26',
-        status: 1,
-        rooms: ['62a95ae67595a539e1fd3a06'],
-      })
-      .then((res) => {
-        const result = JSON.parse(res.text);
-        id = result.data[0]._id;
-      });
-  });
+  describe('update',()=>{
+    it('update order', () => {
+      return request(app.getHttpServer())
+        .post('/order/create')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .send({
+          id,
+          idUser: '62a955f4763250074914bd01',
+          totalPerson: 10,
+          startDate: '2022-02-22',
+          endDate: '2022-02-29',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        .then((res) => {
+          const result = JSON.parse(res.text);
+          id = result.data[0]._id;
+        });
+    });
+  
+    it('update order not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/order/create')
+        .send({
+          id,
+          idUser: '62a955f4763250074914bd01',
+          totalPerson: 10,
+          startDate: '2022-02-22',
+          endDate: '2022-02-29',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('update order with loss param', async () => {
+      const result = await request(app.getHttpServer())
+        .post('/order/create')
+        .auth(token_user, {
+          type: 'bearer',
+        })
+        .send({
+          id,
+          totalPerson: 10,
+          startDate: '2022-02-22',
+          endDate: '2022-02-29',
+          status: 1,
+          rooms: ['62a95ae67595a539e1fd3a06'],
+        })
+        const res = JSON.parse(result.text);
+        expect(res.error).toBe('Bad Request')
+    });
+  })
 
-  it('update order', () => {
-    return request(app.getHttpServer())
-      .post('/order/create')
-      .auth(token_user, {
-        type: 'bearer',
-      })
-      .send({
-        id,
-        idUser: '62a955f4763250074914bd01',
-        totalPerson: 10,
-        startDate: '2022-02-22',
-        endDate: '2022-02-29',
-        status: 1,
-        rooms: ['62a95ae67595a539e1fd3a06'],
-      })
-      .then((res) => {
-        const result = JSON.parse(res.text);
-        id = result.data[0]._id;
-      });
-  });
-
-  it('delete order', () => {
-    return request(app.getHttpServer())
-      .delete(`/order/${id}`)
-      .auth(token_user, {
-        type: 'bearer',
-      });
-  });
+  describe('delete',()=>{
+    it('delete order', () => {
+      return request(app.getHttpServer())
+        .delete(`/order/${id}`)
+        .auth(token_user, {
+          type: 'bearer',
+        });
+    });
+  
+    it('delete order not have token', async () => {
+      const result = await request(app.getHttpServer())
+        .delete(`/order/${id}`)
+        expect(result.text).toBe('unauthorization')
+    });
+  
+    it('delete order not order', () => {
+      return request(app.getHttpServer())
+        .delete(`/order/62a95ae67595a539e1fd3a06`)
+        .auth(token_user, {
+          type: 'bearer',
+        });
+    });
+  })
 });

@@ -42,6 +42,7 @@ export class TypeRoomController {
   @Patch('update')
   @UseGuards(AuthGuard)
   @Roles('admin')
+  @UsePipes(new ValidationPipe({transform:true}))
   update(@Request() req, @Body() updateTypeRoomDto: UpdateTypeRoomDto) {
     return this.typeRoomService.update(req.info.info._id, updateTypeRoomDto);
   }
@@ -49,6 +50,7 @@ export class TypeRoomController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @Roles('admin')
+  @UsePipes(new ValidationPipe({transform:true}))
   remove(@Request() req, @Param('id') id: string) {
     return this.typeRoomService.remove(req.info.info._id, id);
   }
