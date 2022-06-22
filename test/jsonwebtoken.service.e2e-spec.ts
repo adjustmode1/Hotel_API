@@ -29,7 +29,7 @@ describe('JsonwebtokenService', () => {
 
   it('verify token success', async () => {
     const result = service.check(tokenRight);
-    expect(result.status).toBe(2000);
+    expect(result.status).toBe(200);
   });
 
   it('verify token expried', async () => {

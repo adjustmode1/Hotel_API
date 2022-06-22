@@ -27,7 +27,7 @@ describe('TypeRoomController', () => {
         const result = JSON.parse(res.text);
         token = result.data;
       });
-
+      jest.setTimeout(60000)
     controller = module.get<TypeRoomController>(TypeRoomController);
   });
 
@@ -72,7 +72,7 @@ describe('TypeRoomController', () => {
         })
         .expect(400)
 
-        expect(result.text).toBe('unauthorization')
+        return expect(result.text).toBe('unauthorization')
     });
 
     it('create new type room not price', () => {
@@ -124,8 +124,8 @@ describe('TypeRoomController', () => {
         .expect(200);
     });
 
-    it('update type room with loss param', async () => {
-      const result = await request(app.getHttpServer())
+    it('update type room with loss param',() => {
+      return request(app.getHttpServer())
         .patch('/typeRoom/update')
         .auth(token, {
           type: 'bearer',
@@ -146,7 +146,7 @@ describe('TypeRoomController', () => {
         })
         .expect(400);
             
-      expect(result.text).toBe('unauthorization')
+      return expect(result.text).toBe('unauthorization')
     });
   })
 
@@ -165,7 +165,7 @@ describe('TypeRoomController', () => {
         .delete(`/typeRoom/${id}`)
         .expect(400);
 
-      expect(result.text).toBe('unauthorization')
+      return expect(result.text).toBe('unauthorization')
     });
   })
 });
