@@ -16,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { TestdbModule } from './testdb/testdb.module';
 import { TestappModule } from './testapp/testapp.module';
+import { TestmicroModule } from './testmicro/testmicro.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { TestappModule } from './testapp/testapp.module';
     AuthModule,
     TestdbModule,
     TestappModule,
+    TestmicroModule,
   ],
   controllers: [AppController],
   providers: [AppService],
