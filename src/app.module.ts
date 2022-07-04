@@ -17,6 +17,8 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { TestdbModule } from './testdb/testdb.module';
 import { TestappModule } from './testapp/testapp.module';
 import { TestmicroModule } from './testmicro/testmicro.module';
+import { TypeRoomMicroServiceModule } from './type-room-micro-service/type-room-micro-service.module';
+import { TypeRoomApiModule } from './type-room-api/type-room-api.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { TestmicroModule } from './testmicro/testmicro.module';
     TestdbModule,
     TestappModule,
     TestmicroModule,
+    TypeRoomMicroServiceModule,
+    TypeRoomApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -51,6 +55,6 @@ export class AppModule {
         { path: 'user/(.*)', method: RequestMethod.GET },
         { path: 'user/(.*)', method: RequestMethod.POST },
       )
-      .forRoutes('services', 'staff', 'order', 'room', 'typeRoom', 'user','logsSys');
+      .forRoutes('services', 'staff', 'order', 'room', 'typeRoom', 'user','logsSys')
   }
 }

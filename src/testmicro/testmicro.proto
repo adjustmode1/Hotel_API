@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package testmicro;
+
+service TestmicroService{
+    rpc helloFunction (hello) returns (helloResponse);
+}
+
+message hello {
+    string say = 1;
+}
+
+message helloResponse{
+    string reply = 1;
+}
+
+// message HelloResponse {
+//     string reply = 1;
+//   }

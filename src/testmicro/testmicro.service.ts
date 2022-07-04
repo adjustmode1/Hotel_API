@@ -5,6 +5,7 @@ import { UpdateTestmicroDto } from './dto/update-testmicro.dto';
 @Injectable()
 export class TestmicroService {
   create(createTestmicroDto: CreateTestmicroDto) {
+    console.log('đã gọi 1')
     return 'This action adds a new testmicro';
   }
 

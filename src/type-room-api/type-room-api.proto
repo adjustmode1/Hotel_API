@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package TypeRoom;
+
+
+service TypeRoomMicroService {
+    rpc findAll (listAllRequest) returns (listAllResponse);
+    rpc hello (helloRequest) returns (helloResponse);
+}
+
+message listAllRequest{
+    string data = 0;
+}
+
+message listAllResponse{
+    string reply = 1;
+}
+
+message createRequest{
+    string name = 1;
+    int64 price = 2;
+}
+
+message helloRequest{
+    string data = 0;
+}
+
+message helloResponse{
+    string reply = 1;
+}

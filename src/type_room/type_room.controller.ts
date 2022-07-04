@@ -19,6 +19,8 @@ import { Roles } from '../roles.decorator';
 
 @Controller('typeRoom')
 export class TypeRoomController {
+  private typeRoomSerice: TypeRoomService;
+  
   constructor(private readonly typeRoomService: TypeRoomService) {}
 
   @Post('create')
@@ -31,12 +33,13 @@ export class TypeRoomController {
 
   @Get('list')
   findAll() {
-    return this.typeRoomService.findAll();
+    return this.typeRoomService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.typeRoomService.findOne(id);
+
+    // return this.typeRoomService.findOne(id);
   }
 
   @Patch('update')

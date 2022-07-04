@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package TypeRoom;
+
+service TypeRoomMicroService {
+    rpc create (createRequest) returns (createResponse);
+    rpc findAll (findAllRequest) returns (findAllResponse);
+    rpc findOne (findOneRequest) returns (findOneResponse);
+    rpc update (updateRequest) returns (updateResponse);
+    rpc remove (removeRequest) returns (removeResponse);
+    rpc hello (helloRequest) returns (helloResponse);
+}
+
+message createRequest{
+    string name = 1;
+    int64 price = 2;
+}
+
+message createResponse{
+    typeRoom typeRoom = 1;
+}
+
+message helloRequest{}
+message helloResponse{
+    string reply = 1;
+}
+
+message findAllRequest{}
+
+message findAllResponse{
+    repeated typeRoom typeRooms = 1;
+}
+
+message findOneRequest{
+    string id = 1;
+}
+
+message findOneResponse{
+    typeRoom typeRoom = 1;
+}
+
+message updateRequest{
+    string id = 1;
+    string name = 2;
+    float price = 3;
+}
+
+message updateResponse{
+    updateType data = 1;
+}
+
+message updateType{
+    bool acknowledged = 1;
+    int32 modifiedCount = 2;
+    int32 upsertedCount = 3;
+    int32 matchedCount = 4;
+}
+
+message removeRequest{
+    string id = 1;
+}
+
+message removeResponse{
+    removeType data = 1;
+}
+
+message removeType{
+    bool acknowledged = 1;
+    int32 deletedCount = 2;
+}
+
+message typeRoom{
+    string _id = 1;
+    string name = 2;
+    float price = 3;
+}
