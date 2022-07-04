@@ -37,7 +37,6 @@ import { TypeRoomMicroServiceModule } from './type-room-micro-service/type-room-
     TestappModule,
     TestmicroModule,
     TypeRoomMicroServiceModule,
-    TypeRoomApiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
