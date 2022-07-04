@@ -18,7 +18,6 @@ import { TestdbModule } from './testdb/testdb.module';
 import { TestappModule } from './testapp/testapp.module';
 import { TestmicroModule } from './testmicro/testmicro.module';
 import { TypeRoomMicroServiceModule } from './type-room-micro-service/type-room-micro-service.module';
-import { TypeRoomApiModule } from './type-room-api/type-room-api.module';
 
 @Module({
   imports: [
