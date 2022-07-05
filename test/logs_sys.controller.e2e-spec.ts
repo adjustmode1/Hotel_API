@@ -42,15 +42,15 @@ describe('LogsSysController', () => {
         type: 'bearer',
       })
       .expect(200);
-      const arr = JSON.parse(result.text);
-      expect(arr.length).toBeGreaterThan(0)
+    const arr = JSON.parse(result.text);
+    expect(arr.length).toBeGreaterThan(0);
   });
 
   it('list all not have token', async () => {
     const result = await request(app.getHttpServer())
       .get('/logsSys/62a953b890e09519a35b8961')
       .expect(400);
-      expect(result.text).toBe('unauthorization')
+    expect(result.text).toBe('unauthorization');
   });
 
   it('list one logs', async () => {
@@ -60,15 +60,15 @@ describe('LogsSysController', () => {
         type: 'bearer',
       })
       .expect(200);
-      const arr = JSON.parse(result.text);
-      expect(arr.length).toBe(1)
+    const arr = JSON.parse(result.text);
+    expect(arr.length).toBe(1);
   });
 
   it('list one logs not have token', async () => {
     const result = await request(app.getHttpServer())
       .get('/logsSys/62a953b890e09519a35b8961')
       .expect(400);
-      expect(result.text).toBe('unauthorization')
+    expect(result.text).toBe('unauthorization');
   });
 
   it('list one logs not found', async () => {
@@ -77,8 +77,8 @@ describe('LogsSysController', () => {
       .auth(token, {
         type: 'bearer',
       })
-      .expect(200)  
-      const arr = JSON.parse(result.text);
-      expect(arr.length).toBe(0)
+      .expect(200);
+    const arr = JSON.parse(result.text);
+    expect(arr.length).toBe(0);
   });
 });

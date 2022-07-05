@@ -51,7 +51,7 @@ describe('StaffController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('find',()=>{
+  describe('find', () => {
     it('find all staff', async () => {
       const result = await request(app.getHttpServer())
         .get('/staff/list')
@@ -59,17 +59,17 @@ describe('StaffController', () => {
           type: 'bearer',
         })
         .expect(200);
-        const res = JSON.parse(result.text)
-        expect(res.length).toBeGreaterThan(0)
+      const res = JSON.parse(result.text);
+      expect(res.length).toBeGreaterThan(0);
     });
 
     it('find all staff not have token', async () => {
       const result = await request(app.getHttpServer())
         .get('/staff/list')
         .expect(400);
-        expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('find one staff', async () => {
       const result = await request(app.getHttpServer())
         .get('/staff/62a95212bcdff37025a39f5e')
@@ -77,26 +77,24 @@ describe('StaffController', () => {
           type: 'bearer',
         })
         .expect(200);
-        const res = JSON.parse(result.text)
-        expect(res).toBeDefined()
+      const res = JSON.parse(result.text);
+      expect(res).toBeDefined();
     });
 
     it('find one staff not have token', async () => {
       const result = await request(app.getHttpServer())
         .get('/staff/62a95212bcdff37025a39f5e')
         .expect(400);
-        expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
 
     it('find one staff not found', async () => {
-      const result = await request(app.getHttpServer())
+      return request(app.getHttpServer())
         .get('/staff/62a95212bcdff37025a3325e')
         .expect(400);
-        // const res = JSON.parse(result.text)
-        // expect(res.length).toBe(0)
     });
-  })
-  describe('create',()=>{
+  });
+  describe('create', () => {
     it('create new staff', () => {
       return request(app.getHttpServer())
         .post('/staff/create')
@@ -115,27 +113,30 @@ describe('StaffController', () => {
       const result = await request(app.getHttpServer())
         .post('/staff/create')
         .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
-        .send(data.getBuffer().toString())
-        
-        expect(result.text).toBe('unauthorization')
+        .send(data.getBuffer().toString());
+
+      expect(result.text).toBe('unauthorization');
     });
 
     it('create new staff loss param', async () => {
-      const form = new FormData()
-      form.append('loss','123')
+      const form = new FormData();
+      form.append('loss', '123');
       const result = await request(app.getHttpServer())
         .post('/staff/create')
-        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .set(
+          'Content-Type',
+          `multipart/form-data; boundary=${form.getBoundary()}`,
+        )
         .send(data.getBuffer().toString())
-        .expect(400)
-        console.log(result.text)
-        // expect(result.text).toBe('unauthorization')
+        .expect(400);
+      console.log(result.text);
+      // expect(result.text).toBe('unauthorization')
     });
-  })
-  describe('update',()=>{
+  });
+  describe('update', () => {
     it('update staff', () => {
-      console.log('f',data)
-      console.log('id',id)
+      console.log('f', data);
+      console.log('id', id);
       data.append('_id', id);
       return request(app.getHttpServer())
         .put('/staff/update')
@@ -147,15 +148,18 @@ describe('StaffController', () => {
     });
 
     it('update staff loss param', async () => {
-      const form = new FormData()
-      form.append('loss','123')
+      const form = new FormData();
+      form.append('loss', '123');
       const result = await request(app.getHttpServer())
         .post('/staff/update')
-        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .set(
+          'Content-Type',
+          `multipart/form-data; boundary=${form.getBoundary()}`,
+        )
         .send(data.getBuffer().toString())
-        .expect(400)
-        console.log(result.text)
-        // expect(result.text).toBe('unauthorization')
+        .expect(400);
+      console.log(result.text);
+      // expect(result.text).toBe('unauthorization')
     });
 
     it('update staff not have token', async () => {
@@ -164,10 +168,10 @@ describe('StaffController', () => {
         .set('Content-Type', `multipart/form-data; boundary=${boundary}`)
         .send(data.getBuffer().toString());
 
-        expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
-  })
-  describe('delete',()=>{
+  });
+  describe('delete', () => {
     it('delete staff', () => {
       return request(app.getHttpServer())
         .delete(`/staff/delete/${id}`)
@@ -190,7 +194,7 @@ describe('StaffController', () => {
       const result = await request(app.getHttpServer())
         .delete(`/staff/delete/${id}`)
         .expect(400);
-        expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
-  })
+  });
 });

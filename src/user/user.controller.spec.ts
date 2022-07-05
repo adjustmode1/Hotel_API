@@ -51,33 +51,33 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('find',()=>{
+  describe('find', () => {
     it('list all users', async () => {
       const result = await request(app.getHttpServer())
-                        .get('/user/list')
-                        .expect(200);
-      const res = JSON.parse(result.text)
-      expect(res.length).toBeGreaterThan(0)
+        .get('/user/list')
+        .expect(200);
+      const res = JSON.parse(result.text);
+      expect(res.length).toBeGreaterThan(0);
     });
-  
+
     it('find one users', async () => {
       const result = await request(app.getHttpServer())
         .get('/user/62a955f4763250074914bd01')
         .expect(200);
 
-        const res = JSON.parse(result.text)
-        expect(res).toBeDefined()
+      const res = JSON.parse(result.text);
+      expect(res).toBeDefined();
     });
 
     it('find one users not found', async () => {
       const result = await request(app.getHttpServer())
         .get('/user/62a955f4763250074914b231')
         .expect(200);
-      expect(result.text).toBe('')
+      expect(result.text).toBe('');
     });
-  })
+  });
 
-  describe('create',()=>{
+  describe('create', () => {
     it('create new user with image', () => {
       return request(app.getHttpServer())
         .post('/user/create')
@@ -88,20 +88,23 @@ describe('UserController', () => {
         });
     });
 
-    it('create new user loss param',async () => {
-      const form = new FormData()
-      form.append('los','123');
+    it('create new user loss param', async () => {
+      const form = new FormData();
+      form.append('los', '123');
       const result = await request(app.getHttpServer())
         .post('/user/create')
-        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .set(
+          'Content-Type',
+          `multipart/form-data; boundary=${form.getBoundary()}`,
+        )
         .send(data.getBuffer().toString())
-        .expect(400)
-        const res = JSON.parse(result.text)
-      expect(res.error).toBe('Bad Request')
+        .expect(400);
+      const res = JSON.parse(result.text);
+      expect(res.error).toBe('Bad Request');
     });
-  })
+  });
 
-  describe('update',()=>{
+  describe('update', () => {
     it('update user with image', () => {
       data.append('_id', id);
       return request(app.getHttpServer())
@@ -113,23 +116,26 @@ describe('UserController', () => {
         .send(data.getBuffer().toString());
     });
 
-    it('update user loss param',async () => {
-      const form = new FormData()
-      form.append('los','123');
+    it('update user loss param', async () => {
+      const form = new FormData();
+      form.append('los', '123');
       const result = await request(app.getHttpServer())
         .patch('/user/update')
-        .set('Content-Type', `multipart/form-data; boundary=${form.getBoundary()}`)
+        .set(
+          'Content-Type',
+          `multipart/form-data; boundary=${form.getBoundary()}`,
+        )
         .auth(token, {
           type: 'bearer',
         })
         .send(data.getBuffer().toString())
-        .expect(400)
-        const res = JSON.parse(result.text)
-      expect(res.error).toBe('Bad Request')
+        .expect(400);
+      const res = JSON.parse(result.text);
+      expect(res.error).toBe('Bad Request');
     });
-  })
+  });
 
-  describe('delete',()=>{
+  describe('delete', () => {
     it('delete user', () => {
       return request(app.getHttpServer()).delete(`/user/${id}`).auth(token, {
         type: 'bearer',
@@ -137,18 +143,18 @@ describe('UserController', () => {
     });
 
     it('delete user not found', () => {
-      return request(app.getHttpServer()).delete(`/user/2a956f2a3c48bdd5c091bc44`).auth(token, {
-        type: 'bearer',
-      })
-      .expect(400)
+      return request(app.getHttpServer())
+        .delete(`/user/2a956f2a3c48bdd5c091bc44`)
+        .auth(token, {
+          type: 'bearer',
+        })
+        .expect(400);
     });
 
     it('delete user not have token', async () => {
-      const result = await request(app.getHttpServer())
-                        .delete(`/user/${id}`)
-                        
+      const result = await request(app.getHttpServer()).delete(`/user/${id}`);
 
-      expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
-  })
+  });
 });

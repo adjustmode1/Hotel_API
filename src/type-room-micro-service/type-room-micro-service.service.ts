@@ -13,7 +13,10 @@ export class TypeRoomMicroServiceService {
     @InjectModel(LogsSys.name) private logSysModel: Model<LogsSysDocument>,
   ) {}
 
-  async create(person, CreateTypeRoomMicroServiceDto: CreateTypeRoomMicroServiceDto) {
+  async create(
+    person,
+    CreateTypeRoomMicroServiceDto: CreateTypeRoomMicroServiceDto,
+  ) {
     return this.typeRoomModel
       .create({
         name: CreateTypeRoomMicroServiceDto.name,
@@ -32,7 +35,6 @@ export class TypeRoomMicroServiceService {
         };
       })
       .catch((err) => {
-        console.log(err);
         return {
           status: 400,
           data: 11000,
@@ -48,7 +50,10 @@ export class TypeRoomMicroServiceService {
     return this.typeRoomModel.find({ _id: id });
   }
 
-  async update(person, UpdateTypeRoomMicroServiceDto: UpdateTypeRoomMicroServiceDto) {
+  async update(
+    person,
+    UpdateTypeRoomMicroServiceDto: UpdateTypeRoomMicroServiceDto,
+  ) {
     const result = await this.typeRoomModel.updateOne(
       { _id: UpdateTypeRoomMicroServiceDto.id },
       {

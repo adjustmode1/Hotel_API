@@ -20,7 +20,7 @@ import { Roles } from '../roles.decorator';
 @Controller('typeRoom')
 export class TypeRoomController {
   private typeRoomSerice: TypeRoomService;
-  
+
   constructor(private readonly typeRoomService: TypeRoomService) {}
 
   @Post('create')
@@ -33,19 +33,18 @@ export class TypeRoomController {
 
   @Get('list')
   findAll() {
-    return this.typeRoomService.findAll()
+    return this.typeRoomService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-
-    // return this.typeRoomService.findOne(id);
+    return this.typeRoomService.findOne(id);
   }
 
   @Patch('update')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  @UsePipes(new ValidationPipe({transform:true}))
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Request() req, @Body() updateTypeRoomDto: UpdateTypeRoomDto) {
     return this.typeRoomService.update(req.info.info._id, updateTypeRoomDto);
   }
@@ -53,7 +52,7 @@ export class TypeRoomController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @Roles('admin')
-  @UsePipes(new ValidationPipe({transform:true}))
+  @UsePipes(new ValidationPipe({ transform: true }))
   remove(@Request() req, @Param('id') id: string) {
     return this.typeRoomService.remove(req.info.info._id, id);
   }

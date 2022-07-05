@@ -5,8 +5,8 @@ import { UpdateTestmicroDto } from './dto/update-testmicro.dto';
 @Injectable()
 export class TestmicroService {
   create(createTestmicroDto: CreateTestmicroDto) {
-    console.log('đã gọi 1')
-    return 'This action adds a new testmicro';
+    console.log('đã gọi 1');
+    return 'This action adds a new testmicro' + createTestmicroDto;
   }
 
   findAll() {
@@ -18,7 +18,7 @@ export class TestmicroService {
   }
 
   update(id: number, updateTestmicroDto: UpdateTestmicroDto) {
-    return `This action updates a #${id} testmicro`;
+    return `This action updates a #${id} testmicro ${updateTestmicroDto}`;
   }
 
   remove(id: number) {

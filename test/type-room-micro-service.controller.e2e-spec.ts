@@ -1,10 +1,10 @@
+import { TypeRoomMicroServiceController } from './../src/type-room-micro-service/type-room-micro-service.controller';
+import { AppModule } from './../src/app.module';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { INestApplication } from '@nestjs/common';
 import * as protoLoader from '@grpc/proto-loader';
 import * as grpc from '@grpc/grpc-js';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from './../app.module';
-import { TypeRoomMicroServiceController } from './type-room-micro-service.controller';
 import * as request from 'supertest';
 import { join } from 'path';
 
@@ -23,16 +23,19 @@ describe('TypeRoomMicroServiceController', () => {
 
     app = module.createNestApplication();
     server = server = app.getHttpAdapter().getInstance();
+    const PROTO_PATH = join(
+      __dirname,
+      '../src/type-room-micro-service/type-room-micro-service.proto',
+    );
 
     await app.connectMicroservice<MicroserviceOptions>({
       transport: Transport.GRPC,
       options: {
         url: '0.0.0.0:3601',
         package: 'TypeRoom',
-        protoPath: join(__dirname, '/type-room-micro-service.proto'),
+        protoPath: PROTO_PATH,
       },
     });
-    const PROTO_PATH = join(__dirname, '/type-room-micro-service.proto');
     const proto = protoLoader.loadSync(PROTO_PATH, {
       keepCase: true,
       longs: String,

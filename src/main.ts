@@ -8,22 +8,25 @@ async function bootstrap() {
   app.enableCors();
   app.use(bodyParser());
   app.connectMicroservice<MicroserviceOptions>({
-      transport: Transport.GRPC,
-      options: {
-        url:'0.0.0.0:3600',
-        package: 'testmicro',
-        protoPath: join(__dirname, '../src/testmicro/testmicro.proto'),
-      },  
-    }); 
+    transport: Transport.GRPC,
+    options: {
+      url: '0.0.0.0:3600',
+      package: 'testmicro',
+      protoPath: join(__dirname, '../src/testmicro/testmicro.proto'),
+    },
+  });
   app.connectMicroservice<MicroserviceOptions>({
-      transport: Transport.GRPC,
-      options: {
-        url:'0.0.0.0:3601',
-        package: 'TypeRoom',
-        protoPath: join(__dirname, '../src/type-room-micro-service/type-room-micro-service.proto'),
-      },  
-    }); 
-  await app.startAllMicroservices()
+    transport: Transport.GRPC,
+    options: {
+      url: '0.0.0.0:3601',
+      package: 'TypeRoom',
+      protoPath: join(
+        __dirname,
+        '../src/type-room-micro-service/type-room-micro-service.proto',
+      ),
+    },
+  });
+  await app.startAllMicroservices();
   await app.listen(3500);
 }
 bootstrap();

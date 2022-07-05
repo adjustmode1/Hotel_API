@@ -9,7 +9,9 @@ describe('TypeRoomMicroServiceService', () => {
       providers: [TypeRoomMicroServiceService],
     }).compile();
 
-    service = module.get<TypeRoomMicroServiceService>(TypeRoomMicroServiceService);
+    service = module.get<TypeRoomMicroServiceService>(
+      TypeRoomMicroServiceService,
+    );
   });
 
   it('should be defined', () => {

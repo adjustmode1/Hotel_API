@@ -6,13 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import TypeRoomSchema, { TypeRoom } from './schema/type_room-schema';
 
 @Module({
-  imports:[
+  imports: [
     MongooseModule.forFeature([
       { name: TypeRoom.name, schema: TypeRoomSchema },
     ]),
-    MongooseModule.forFeature([{ name: LogsSys.name, schema: LogsSysSchema }])
+    MongooseModule.forFeature([{ name: LogsSys.name, schema: LogsSysSchema }]),
   ],
   controllers: [TypeRoomMicroServiceController],
-  providers: [TypeRoomMicroServiceService]
+  providers: [TypeRoomMicroServiceService],
 })
 export class TypeRoomMicroServiceModule {}

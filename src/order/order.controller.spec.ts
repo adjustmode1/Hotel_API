@@ -36,7 +36,7 @@ describe('OrderController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('find',()=>{
+  describe('find', () => {
     it('find all order', async () => {
       const result = await request(app.getHttpServer())
         .get('/order/list')
@@ -44,18 +44,18 @@ describe('OrderController', () => {
           type: 'bearer',
         })
         .expect(200);
-        const arr = JSON.parse(result.text);
-        expect(arr.length).toBeGreaterThan(0)
+      const arr = JSON.parse(result.text);
+      expect(arr.length).toBeGreaterThan(0);
     });
-  
+
     it('find all order not have token', async () => {
       const result = await request(app.getHttpServer())
         .get('/order/list')
-        .expect(400)
-      
-        expect(result.text).toBe('unauthorization')
+        .expect(400);
+
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('find one order', async () => {
       const result = await request(app.getHttpServer())
         .get('/order/62a18d1ddf0effb1b90193d0')
@@ -63,18 +63,18 @@ describe('OrderController', () => {
           type: 'bearer',
         })
         .expect(200);
-        const arr = JSON.parse(result.text);
-        expect(arr.length).toBe(1)
+      const arr = JSON.parse(result.text);
+      expect(arr.length).toBe(1);
     });
-  
+
     it('find one order not have token', async () => {
       const result = await request(app.getHttpServer())
         .get('/order/62a18d1ddf0effb1b90193d0')
         .expect(400);
-        
-        expect(result.text).toBe('unauthorization')
+
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('find one order not found', async () => {
       const result = await request(app.getHttpServer())
         .get('/order/62a18d1ddf0effb1b90123d0')
@@ -82,13 +82,13 @@ describe('OrderController', () => {
           type: 'bearer',
         })
         .expect(200);
-  
-        const arr = JSON.parse(result.text);
-        expect(arr.length).toBe(0)
-    });
-  })
 
-  describe('create',()=>{
+      const arr = JSON.parse(result.text);
+      expect(arr.length).toBe(0);
+    });
+  });
+
+  describe('create', () => {
     it('create order', () => {
       return request(app.getHttpServer())
         .post('/order/create')
@@ -108,7 +108,7 @@ describe('OrderController', () => {
           id = result.data[0]._id;
         });
     });
-  
+
     it('create order not have token', async () => {
       const result = await request(app.getHttpServer())
         .post('/order/create')
@@ -119,10 +119,10 @@ describe('OrderController', () => {
           endDate: '2022-02-26',
           status: 1,
           rooms: ['62a95ae67595a539e1fd3a06'],
-        })
-        expect(result.text).toBe('unauthorization')
+        });
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('create order with loss params', async () => {
       const result = await request(app.getHttpServer())
         .post('/order/create')
@@ -135,13 +135,13 @@ describe('OrderController', () => {
           endDate: '2022-02-26',
           status: 1,
           rooms: ['62a95ae67595a539e1fd3a06'],
-        })
-        const res = JSON.parse(result.text);
-        expect(res.error).toBe('Bad Request')
+        });
+      const res = JSON.parse(result.text);
+      expect(res.error).toBe('Bad Request');
     });
-  })
+  });
 
-  describe('update',()=>{
+  describe('update', () => {
     it('update order', () => {
       return request(app.getHttpServer())
         .post('/order/create')
@@ -162,7 +162,7 @@ describe('OrderController', () => {
           id = result.data[0]._id;
         });
     });
-  
+
     it('update order not have token', async () => {
       const result = await request(app.getHttpServer())
         .post('/order/create')
@@ -174,10 +174,10 @@ describe('OrderController', () => {
           endDate: '2022-02-29',
           status: 1,
           rooms: ['62a95ae67595a539e1fd3a06'],
-        })
-        expect(result.text).toBe('unauthorization')
+        });
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('update order with loss param', async () => {
       const result = await request(app.getHttpServer())
         .post('/order/create')
@@ -191,13 +191,13 @@ describe('OrderController', () => {
           endDate: '2022-02-29',
           status: 1,
           rooms: ['62a95ae67595a539e1fd3a06'],
-        })
-        const res = JSON.parse(result.text);
-        expect(res.error).toBe('Bad Request')
+        });
+      const res = JSON.parse(result.text);
+      expect(res.error).toBe('Bad Request');
     });
-  })
+  });
 
-  describe('delete',()=>{
+  describe('delete', () => {
     it('delete order', () => {
       return request(app.getHttpServer())
         .delete(`/order/${id}`)
@@ -205,13 +205,12 @@ describe('OrderController', () => {
           type: 'bearer',
         });
     });
-  
+
     it('delete order not have token', async () => {
-      const result = await request(app.getHttpServer())
-        .delete(`/order/${id}`)
-        expect(result.text).toBe('unauthorization')
+      const result = await request(app.getHttpServer()).delete(`/order/${id}`);
+      expect(result.text).toBe('unauthorization');
     });
-  
+
     it('delete order not order', () => {
       return request(app.getHttpServer())
         .delete(`/order/62a95ae67595a539e1fd3a06`)
@@ -219,5 +218,5 @@ describe('OrderController', () => {
           type: 'bearer',
         });
     });
-  })
+  });
 });

@@ -86,9 +86,9 @@ describe('StaffController', () => {
           name: 'test temp type',
           price: 123123,
         })
-        .expect(400)
+        .expect(400);
 
-        return expect(result.text).toBe('unauthorization')
+      return expect(result.text).toBe('unauthorization');
     });
 
     it('create new type room not price', () => {
@@ -125,7 +125,7 @@ describe('StaffController', () => {
     });
   });
 
-  describe('update',()=>{
+  describe('update', () => {
     it('update type room', () => {
       return request(app.getHttpServer())
         .patch('/typeRoom/update')
@@ -140,7 +140,7 @@ describe('StaffController', () => {
         .expect(200);
     });
 
-    it('update type room with loss param',() => {
+    it('update type room with loss param', () => {
       return request(app.getHttpServer())
         .patch('/typeRoom/update')
         .auth(token, {
@@ -152,7 +152,7 @@ describe('StaffController', () => {
         .expect(400);
     });
 
-    it('update type room not have token',async () => {
+    it('update type room not have token', async () => {
       const result = await request(app.getHttpServer())
         .patch('/typeRoom/update')
         .send({
@@ -161,12 +161,12 @@ describe('StaffController', () => {
           price: 131313,
         })
         .expect(400);
-            
-      return expect(result.text).toBe('unauthorization')
-    });
-  })
 
-  describe('delete',()=>{
+      return expect(result.text).toBe('unauthorization');
+    });
+  });
+
+  describe('delete', () => {
     it('delete type room', () => {
       return request(app.getHttpServer())
         .delete(`/typeRoom/${id}`)
@@ -181,7 +181,7 @@ describe('StaffController', () => {
         .delete(`/typeRoom/${id}`)
         .expect(400);
 
-      return expect(result.text).toBe('unauthorization')
+      return expect(result.text).toBe('unauthorization');
     });
-  })
+  });
 });

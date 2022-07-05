@@ -70,9 +70,9 @@ describe('TypeRoomController', () => {
           name: 'test temp type',
           price: 123123,
         })
-        .expect(400)
+        .expect(400);
 
-        expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
 
     it('create new type room not price', () => {
@@ -109,7 +109,7 @@ describe('TypeRoomController', () => {
     });
   });
 
-  describe('update',()=>{
+  describe('update', () => {
     it('update type room', () => {
       return request(app.getHttpServer())
         .patch('/typeRoom/update')
@@ -125,7 +125,7 @@ describe('TypeRoomController', () => {
     });
 
     it('update type room with loss param', async () => {
-      const result = await request(app.getHttpServer())
+      return request(app.getHttpServer())
         .patch('/typeRoom/update')
         .auth(token, {
           type: 'bearer',
@@ -136,7 +136,7 @@ describe('TypeRoomController', () => {
         .expect(400);
     });
 
-    it('update type room not have token',async () => {
+    it('update type room not have token', async () => {
       const result = await request(app.getHttpServer())
         .patch('/typeRoom/update')
         .send({
@@ -145,12 +145,12 @@ describe('TypeRoomController', () => {
           price: 131313,
         })
         .expect(400);
-            
-      expect(result.text).toBe('unauthorization')
-    });
-  })
 
-  describe('delete',()=>{
+      expect(result.text).toBe('unauthorization');
+    });
+  });
+
+  describe('delete', () => {
     it('delete type room', () => {
       return request(app.getHttpServer())
         .delete(`/typeRoom/${id}`)
@@ -165,7 +165,7 @@ describe('TypeRoomController', () => {
         .delete(`/typeRoom/${id}`)
         .expect(400);
 
-      expect(result.text).toBe('unauthorization')
+      expect(result.text).toBe('unauthorization');
     });
-  })
+  });
 });
